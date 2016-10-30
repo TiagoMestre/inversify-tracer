@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2015",
+        "lib": ["es6"],
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "declaration": false,
+        "preserveConstEnums": true,
+        "outDir": "build",
+        "moduleResolution": "node",
+        "pretty": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "baseUrl": "",
+        "typeRoots": ["node_modules/@types"]
+    },
+    "include": [
+        "src/**/*.ts",
+        "tests/**/*.ts"
+    ],
+    "compileOnSave": true
+}

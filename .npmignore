@@ -1,0 +1,17 @@
+
+.git
+.vscode
+
+gulp
+src
+tests
+reports
+coverage
+examples
+
+.npmignore
+.gitignore
+.travis.yml
+gulpfile.js
+tsconfig.json
+tslint.json
