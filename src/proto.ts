@@ -4,7 +4,6 @@ import { interfaces, Kernel, injectable, inject } from 'inversify';
 
 import { inversifyWatcher, CallInfo, ReturnInfo } from './index';
 
-
 @injectable()
 class Warrior {
 
