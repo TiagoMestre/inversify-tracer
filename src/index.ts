@@ -1,6 +1,9 @@
 
 import { Watcher } from './watcher';
+import { WatcherOptions } from './interfaces';
 
-export function inversifyWatcher(): Watcher {
-    return new Watcher();
+export { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+
+export function inversifyWatcher(options?: WatcherOptions): Watcher {
+    return new Watcher(options);
 }

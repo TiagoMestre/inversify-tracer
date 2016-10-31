@@ -18,11 +18,7 @@ let Warrior = class Warrior {
     constructor(weapon) {
         this.weapon = weapon;
     }
-    attack() {
-        console.log('swing weapon warrior');
-    }
-    isAlive() {
-        return true;
+    attack(value, otherValue) {
     }
 };
 Warrior = __decorate([
@@ -44,11 +40,8 @@ let Ninja = class Ninja extends Warrior {
         super(weapon);
         this.speed = 10;
     }
-    attack() {
-        console.log('swing weapon ninja');
-    }
-    isAlive() {
-        return true;
+    attack(value, otherValue) {
+        return value;
     }
 };
 Ninja = __decorate([
@@ -56,17 +49,41 @@ Ninja = __decorate([
     __param(0, inversify_1.inject('Weapon')), 
     __metadata('design:paramtypes', [Object])
 ], Ninja);
+let Samurai = class Samurai extends Warrior {
+    constructor(weapon) {
+        super(weapon);
+        this.speed = 4;
+    }
+    attack(value) {
+        return value;
+    }
+};
+Samurai = __decorate([
+    inversify_1.injectable(),
+    __param(0, inversify_1.inject('Weapon')), 
+    __metadata('design:paramtypes', [Object])
+], Samurai);
 let kernel = new inversify_1.Kernel();
 kernel.bind('Warrior').to(Ninja);
+kernel.bind('Warrior').to(Samurai);
+kernel.bind('Ninja').to(Ninja);
 kernel.bind('Weapon').to(Katana);
-const watcher = index_1.inversifyWatcher();
-watcher.on('call', (className, methodName, args) => {
-    console.log(`${className}:${methodName}:call ${args}`);
+const watcher = index_1.inversifyWatcher({
+    classes: []
 });
-watcher.on('return', (className, methodName, result) => {
-    console.log(`${className}:${methodName}:return ${result}`);
+watcher.on('call', (callInfo) => {
+    let comb = callInfo.parameters.map((param, i) => { return `${param}: ${callInfo.arguments[i]}`; });
+    console.log(`${new Date().toISOString()} ${callInfo.objectId} ${callInfo.className} ${callInfo.methodName} called ${comb}`);
+});
+watcher.on('returna', (className, methodName, result) => {
+    console.log(`${new Date().toISOString()} ${className} ${methodName} return ${result}`);
 });
 kernel.applyMiddleware(watcher.build());
-let ninja = kernel.get('Warrior');
-ninja.attack();
+let warriors = kernel
+    .getAll('Warrior')
+    .concat(kernel.getAll('Warrior'))
+    .concat(kernel.getAll('Warrior'));
+warriors.forEach((warrior) => {
+    warrior.attack(Math.floor(Math.random() * 10), 'asd');
+});
 //# sourceMappingURL=proto.js.map

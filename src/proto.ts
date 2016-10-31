@@ -2,15 +2,11 @@
 import 'reflect-metadata';
 import { interfaces, Kernel, injectable, inject } from 'inversify';
 
-import { inversifyWatcher } from './index';
+import { inversifyWatcher, CallInfo, ReturnInfo } from './index';
 
-
-interface Person {
-    isAlive(): boolean;
-}
 
 @injectable()
-class Warrior implements Person {
+class Warrior {
 
     public weapon: Weapon;
 
@@ -18,15 +14,9 @@ class Warrior implements Person {
         this.weapon = weapon;
     }
 
-    public attack() {
-        console.log('swing weapon warrior');
-    }
-
-    public isAlive() {
-        return true;
+    public attack(value: number, otherValue: string) {
     }
 }
-
 
 interface Weapon {}
 
@@ -44,32 +34,52 @@ class Ninja extends Warrior {
         super(weapon);
     }
 
-    public attack() {
-        console.log('swing weapon ninja');
+    public attack(value: number, otherValue: string) {
+        return value;
+    }
+}
+
+@injectable()
+class Samurai extends Warrior {
+
+    public speed: number = 4;
+
+    constructor(@inject('Weapon') weapon: Weapon) {
+        super(weapon);
     }
 
-    public isAlive() {
-        return true;
+    public attack(value: number) {
+        return value;
     }
 }
 
 let kernel = new Kernel();
 
 kernel.bind<Warrior>('Warrior').to(Ninja);
+kernel.bind<Warrior>('Warrior').to(Samurai);
+kernel.bind<Ninja>('Ninja').to(Ninja);
 kernel.bind<Weapon>('Weapon').to(Katana);
 
-const watcher = inversifyWatcher();
-
-watcher.on('call', (className: string, methodName: string, args: any[]) => {
-    console.log(`${className}:${methodName}:call ${args}`);
+const watcher = inversifyWatcher({
+    classes: []
 });
 
-watcher.on('return', (className: string, methodName: string, result: any) => {
-    console.log(`${className}:${methodName}:return ${result}`);
+watcher.on('call', (callInfo: CallInfo) => {
+    let comb = callInfo.parameters.map((param: any, i: number) => { return `${param}: ${callInfo.arguments[i]}`; });
+    console.log(`${new Date().toISOString()} ${callInfo.objectId} ${callInfo.className} ${callInfo.methodName} called ${comb}`);
+});
+
+watcher.on('returna', (className: string, methodName: string, result: any) => {
+    console.log(`${new Date().toISOString()} ${className} ${methodName} return ${result}`);
 });
 
 kernel.applyMiddleware(watcher.build());
 
-let ninja = kernel.get<Warrior>('Warrior');
+let warriors = kernel
+    .getAll<Warrior>('Warrior')
+    .concat(kernel.getAll<Warrior>('Warrior'))
+    .concat(kernel.getAll<Warrior>('Warrior'));
 
-ninja.attack();
+warriors.forEach((warrior) => {
+    warrior.attack(Math.floor(Math.random() * 10), 'asd');
+});
