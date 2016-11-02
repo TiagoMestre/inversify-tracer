@@ -54,5 +54,9 @@
     "sinon": "1.17.5",
     "tslint": "3.15.1",
     "typescript": "2.0.6"
+  },
+  "dependencies": {
+    "@types/minimatch": "^2.0.29",
+    "minimatch": "3.0.3"
   }
 }

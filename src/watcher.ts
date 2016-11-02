@@ -1,22 +1,37 @@
 
 import { EventEmitter } from 'events';
 import { interfaces } from 'inversify';
-
-import { setup } from './proxy';
+import * as minimatch from 'minimatch';
 
 import { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
+import { ProxyListener } from './proxy';
 
-export class Watcher extends EventEmitter {
+const defaultOptions = {
+    filters: ['*:*']
+};
 
-	private options: WatcherOptions;
+export class InversifyWatcher {
 
-	constructor(options?: WatcherOptions) {
-		super();
-		options = options || {};
+	private emitter: EventEmitter = new EventEmitter();
 
-		this.options = {
-			classes: options.classes
-		};
+	private classFilter: ClassFilter;
+
+	private proxyListener: ProxyListener;
+
+	constructor(options: any) {
+
+		options.filters = normalizeFilters(options.filters);
+
+		this.classFilter = new ClassFilter(options.filters);
+		this.proxyListener = new ProxyListener(
+			this.emitter,
+			new MethodFilter(options.filters)
+		);
+	}
+
+	public on(event: string, callback: any) {
+		this.emitter.on(event, callback);
 	}
 
 	public build(): interfaces.Middleware {
@@ -25,21 +40,17 @@ export class Watcher extends EventEmitter {
 
 			return (planAndResolveArgs: interfaces.PlanAndResolveArgs) => {
 
-				return planAndResolve(planAndResolveArgs).map((object) => {
+				const objects = planAndResolve(planAndResolveArgs);
 
-					if (
-						this.options.classes &&
-						this.options.classes.indexOf(object.constructor.name) === -1
-					) {
-						return object;
-					}
-
-					return setup(
-						object,
-						(callInfo: CallInfo) => { this.emit('call', callInfo); },
-						(returnInfo: ReturnInfo) => { this.emit('return', returnInfo); }
-					);
+				const objectsToProxy = objects.filter((object) => {
+					return this.classFilter.match(object.constructor.name);
 				});
+
+				objectsToProxy.forEach((object) => {
+					return this.proxyListener.apply(object);
+				});
+
+				return objects;
 			};
 		};
 	}

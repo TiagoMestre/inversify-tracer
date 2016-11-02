@@ -1,60 +1,77 @@
 
+import { EventEmitter } from 'events';
 import { OnCall, OnReturn } from './interfaces';
+import { MethodFilter } from './filters';
 
 const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
+
+const constructorName = 'constructor';
 
 function getParamNames(func: Function) {
 	const fnStr = func.toString().replace(STRIP_COMMENTS, '');
 	return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES) || [];
 }
 
-let idCounter = 0;
+export class ProxyListener {
 
-export function setup (object: any, onCall: OnCall, onReturn: OnReturn) {
+	private idCounter: number = 0;
+	private emitter: EventEmitter;
+	private methodFilter: MethodFilter;
 
-	const className = object.constructor.name;
-	const objectId: number = idCounter++;
-
-	let properties: Set<string> = new Set<string>();
-	let obj = object;
-
-	while (Object.getPrototypeOf(obj) !== null) {
-
-		Object.getOwnPropertyNames(obj).forEach((propertyName) => {
-            properties.add(propertyName);
-        });
-
-		obj = Object.getPrototypeOf(obj);
+	constructor(emitter: EventEmitter, methodFilter: MethodFilter) {
+		this.emitter = emitter;
+		this.methodFilter = methodFilter;
 	}
 
-	const methods: string[] = [];
+	public apply(object: any) {
 
-	properties.forEach((propertyName: string) => {
-		if (typeof(object[propertyName]) === 'function') methods.push(propertyName);
-	});
+		const className = object.constructor.name;
+		const objectId: number = this.idCounter++;
 
-	methods.forEach((methodName: string) => {
+		let properties: Set<string> = new Set<string>();
+		let obj = object;
 
-		const params = getParamNames(object[methodName]);
+		while (Object.getPrototypeOf(obj) !== null) {
 
-		object[methodName] = new Proxy(object[methodName], {
-			apply: (method: any, object: any, args: any[]) => {
+			Object.getOwnPropertyNames(obj).forEach((propertyName) => {
+				properties.add(propertyName);
+			});
 
-				onCall({
-					objectId,
-					className,
-					methodName,
-					arguments: args.length > params.length ? args : args.concat(new Array(params.length - args.length)),
-					parameters: params
-				});
+			obj = Object.getPrototypeOf(obj);
+		}
 
-				const result = method.apply(object, args);
+		let methods: string[] = [];
 
-				onReturn({ objectId, className, methodName, result });
+		properties.forEach((propertyName: string) => {
+			if (typeof(object[propertyName]) === 'function' && propertyName !== constructorName) {
+				methods.push(propertyName);
 			}
 		});
-	});
 
-	return object;
+		methods.filter((methodName: string) => {
+			return this.methodFilter.match(className, methodName);
+		});
+
+		methods.forEach((methodName: string) => {
+
+			const params = getParamNames(object[methodName]);
+			object[methodName] = new Proxy(object[methodName], {
+				apply: (method: any, object: any, args: any[]) => {
+
+					this.emitter.emit('call', {
+						objectId,
+						className,
+						methodName,
+						arguments: args.length > params.length ? args : args.concat(new Array(params.length - args.length)),
+						parameters: params
+					});
+
+					const result = method.apply(object, args);
+
+					this.emitter.emit('return', { objectId, className, methodName, result });
+				}
+			});
+		});
+	}
 }

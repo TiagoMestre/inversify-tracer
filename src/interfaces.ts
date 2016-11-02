@@ -15,7 +15,7 @@ export interface ReturnInfo extends BaseInfo {
 }
 
 export interface WatcherOptions {
-	classes?: string[];
+	filters?: string[];
 }
 
 export declare type OnCall = (callInfo: CallInfo) => void;

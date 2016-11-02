@@ -1,9 +1,10 @@
 
-import { Watcher } from './watcher';
+import { InversifyWatcher } from './watcher';
 import { WatcherOptions } from './interfaces';
 
-export { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
 
-export function inversifyWatcher(options?: WatcherOptions): Watcher {
-    return new Watcher(options);
-}
+export { InversifyWatcher } from './watcher';
+
+export { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+export * from './errors';
