@@ -8,7 +8,8 @@ import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
 import { ProxyListener } from './proxy';
 
 const defaultOptions: WatcherOptions = {
-    filters: ['*:*']
+    filters: ['*:*'],
+	inspectReturnedPromise: true
 };
 
 function merge (options: any, defaultOptions: any) {
@@ -49,8 +50,8 @@ export class InversifyWatcher {
 		);
 	}
 
-	public on(event: string, callback: any) {
-		this.emitter.on(event, callback);
+	public on(eventName: string, callback: any) {
+		this.emitter.on(eventName, callback);
 	}
 
 	public build(): interfaces.Middleware {

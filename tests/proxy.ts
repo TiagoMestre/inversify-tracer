@@ -4,4 +4,7 @@ import { ProxyListener } from './../src/proxy';
 
 describe('ProxyListener', () => {
 
+	describe('apply', () => {
+
+	});
 });
