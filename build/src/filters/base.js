@@ -7,8 +7,9 @@ class BaseFilter {
         this.excludeFilters = excludeFilters;
     }
     baseMatch(matchValue) {
-        if (this.cache.has(matchValue))
+        if (this.cache.has(matchValue)) {
             return this.cache.get(matchValue);
+        }
         let result = false;
         for (let i = 0; i < this.includeFilters.length; i++) {
             if (minimatch(matchValue, this.includeFilters[i])) {

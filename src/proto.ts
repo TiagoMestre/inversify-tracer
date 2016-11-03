@@ -1,5 +1,4 @@
 
-/*
 import 'reflect-metadata';
 import { interfaces, Kernel, injectable, inject } from 'inversify';
 import * as minimatch from 'minimatch';
@@ -38,6 +37,10 @@ class Ninja extends Warrior {
     public attack(value: number, otherValue: string) {
         return value;
     }
+
+    public attackPromise() {
+        return Promise.resolve('promise value');
+    }
 }
 
 @injectable()
@@ -61,8 +64,8 @@ kernel.bind<Warrior>('Warrior').to(Samurai);
 kernel.bind<Ninja>('Ninja').to(Ninja);
 kernel.bind<Weapon>('Weapon').to(Katana);
 
-const watcher = inversifyWatcher({
-    filters: ['Ninja/*', '!Ninja/attack']
+const watcher = new InversifyWatcher({
+    filters: ['Ninja:*', '!Ninja:attack']
 });
 
 watcher.on('call', (callInfo: CallInfo) => {
@@ -70,20 +73,21 @@ watcher.on('call', (callInfo: CallInfo) => {
     console.log(`${new Date().toISOString()} ${callInfo.objectId} ${callInfo.className} ${callInfo.methodName} called ${comb}`);
 });
 
+watcher.on('return', (returnInfo: ReturnInfo) => {
+    // console.log(`${new Date().toISOString()} ${returnInfo.objectId} 
+    // ${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
+});
+
 kernel.applyMiddleware(watcher.build());
 
 let warriors = kernel.getAll<Warrior>('Warrior');
-
 
 warriors.forEach((warrior) => {
     warrior.attack(Math.floor(Math.random() * 10), 'asd');
 });
 
-const nFilters = normalizeFilters(['!Ninja']);
+let ninja = kernel.get<Ninja>('Ninja');
 
-const classFilter = new ClassFilter(nFilters);
-const methodFilter = new MethodFilter(nFilters);
-
-console.log(classFilter.match('Ninja'));
-console.log(classFilter.match('Samurai'));
-*/
+ninja.attackPromise().then((value) => {
+    console.log(value);
+});

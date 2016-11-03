@@ -16,6 +16,7 @@ export interface ReturnInfo extends BaseInfo {
 
 export interface WatcherOptions {
 	filters?: string[];
+	inspectReturnedPromise?: boolean;
 }
 
 export declare type OnCall = (callInfo: CallInfo) => void;

@@ -17,7 +17,9 @@ export abstract class BaseFilter {
 
 	protected baseMatch(matchValue: string): boolean {
 
-		if (this.cache.has(matchValue)) return this.cache.get(matchValue);
+		if (this.cache.has(matchValue)) {
+			return this.cache.get(matchValue);
+		}
 
 		let result = false;
 

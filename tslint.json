@@ -5,7 +5,7 @@
         "class-name": true,
         "curly": false,
         "eofline": false,
-        "forin": true,
+        "forin": false,
         "quotemark": [true,
             "single",
             "avoid-escape"

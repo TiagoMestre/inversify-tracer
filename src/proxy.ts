@@ -13,15 +13,22 @@ function getParamNames(func: Function) {
 	return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES) || [];
 }
 
+export interface ProxyListenerOptions {
+	inspectReturnedPromise: boolean;
+}
+
 export class ProxyListener {
 
 	private idCounter: number = 0;
 	private emitter: EventEmitter;
 	private methodFilter: MethodFilter;
 
-	constructor(emitter: EventEmitter, methodFilter: MethodFilter) {
+	private options: ProxyListenerOptions;
+
+	constructor(emitter: EventEmitter, methodFilter: MethodFilter, options: ProxyListenerOptions) {
 		this.emitter = emitter;
 		this.methodFilter = methodFilter;
+		this.options = options;
 	}
 
 	public apply(object: any) {
@@ -69,7 +76,20 @@ export class ProxyListener {
 
 					const result = method.apply(object, args);
 
-					this.emitter.emit('return', { objectId, className, methodName, result });
+					if (this.options.inspectReturnedPromise && result instanceof Promise) {
+
+						return result.then((value: any) => {
+							this.emitter.emit('return', { objectId, className, methodName, result: value });
+							return Promise.resolve(value);
+						}).catch((error: any) => {
+							this.emitter.emit('return', { objectId, className, methodName, error });
+							return Promise.reject(error);
+						});
+
+					} else {
+						this.emitter.emit('return', { objectId, className, methodName, result });
+						return result;
+					}
 				}
 			});
 		});

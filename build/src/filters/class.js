@@ -5,7 +5,7 @@ class ClassFilter extends base_1.BaseFilter {
     constructor(filters) {
         super(filters.filter((filter) => constants_1.includeRegex.test(filter)).map((filter) => {
             return filter.match(constants_1.classIncludeRegex)[1];
-        }), filters.filter((filter) => constants_1.classExcludeRegex.test(filter)).map((filter) => {
+        }), filters.filter((filter) => constants_1.excludeRegex.test(filter)).map((filter) => {
             return filter.match(constants_1.classExcludeRegex)[1];
         }));
     }

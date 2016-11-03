@@ -7,9 +7,18 @@ import { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
 import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
 import { ProxyListener } from './proxy';
 
-const defaultOptions = {
+const defaultOptions: WatcherOptions = {
     filters: ['*:*']
 };
+
+function merge (options: any, defaultOptions: any) {
+
+	for (let prop in defaultOptions) {
+		options[prop] = options[prop] || defaultOptions[prop];
+	}
+
+	return options;
+}
 
 export class InversifyWatcher {
 
@@ -19,14 +28,24 @@ export class InversifyWatcher {
 
 	private proxyListener: ProxyListener;
 
-	constructor(options: any) {
+	constructor(options?: WatcherOptions) {
+
+		if (options) {
+			options = merge(options, defaultOptions);
+		} else {
+			options = defaultOptions;
+		}
 
 		options.filters = normalizeFilters(options.filters);
 
 		this.classFilter = new ClassFilter(options.filters);
+
 		this.proxyListener = new ProxyListener(
 			this.emitter,
-			new MethodFilter(options.filters)
+			new MethodFilter(options.filters),
+			{
+				inspectReturnedPromise: options.inspectReturnedPromise
+			}
 		);
 	}
 

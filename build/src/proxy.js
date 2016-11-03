@@ -7,10 +7,11 @@ function getParamNames(func) {
     return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES) || [];
 }
 class ProxyListener {
-    constructor(emitter, methodFilter) {
+    constructor(emitter, methodFilter, options) {
         this.idCounter = 0;
         this.emitter = emitter;
         this.methodFilter = methodFilter;
+        this.options = options;
     }
     apply(object) {
         const className = object.constructor.name;
@@ -44,7 +45,19 @@ class ProxyListener {
                         parameters: params
                     });
                     const result = method.apply(object, args);
-                    this.emitter.emit('return', { objectId, className, methodName, result });
+                    if (this.options.inspectReturnedPromise && result instanceof Promise) {
+                        return result.then((value) => {
+                            this.emitter.emit('return', { objectId, className, methodName, result: value });
+                            return Promise.resolve(value);
+                        }).catch((error) => {
+                            this.emitter.emit('return', { objectId, className, methodName, error });
+                            return Promise.reject(error);
+                        });
+                    }
+                    else {
+                        this.emitter.emit('return', { objectId, className, methodName, result });
+                        return result;
+                    }
                 }
             });
         });
