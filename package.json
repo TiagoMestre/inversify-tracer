@@ -1,5 +1,5 @@
 {
-  "name": "inversify-watcher",
+  "name": "inversify-tracer",
   "version": "0.1.0",
   "description": "",
   "main": "build/src/index.js",
@@ -11,11 +11,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TiagoMestre/inversify-watcher.git"
+    "url": "git+https://github.com/TiagoMestre/inversify-tracer.git"
   },
   "keywords": [
     "inversify",
-    "watcher"
+    "trace"
   ],
   "author": "Tiago Fernandes",
   "contributors": [
@@ -26,9 +26,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TiagoMestre/inversify-watcher/issues"
+    "url": "https://github.com/TiagoMestre/inversify-tracer/issues"
   },
-  "homepage": "https://github.com/TiagoMestre/inversify-watcher#readme",
+  "homepage": "https://github.com/TiagoMestre/inversify-tracer#readme",
   "peerDependencies": {
     "inversify": ">=2.0.0"
   },
