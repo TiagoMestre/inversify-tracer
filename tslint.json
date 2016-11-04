@@ -1,7 +1,8 @@
 {
     "extends": "tslint:latest",
     "rules": {
-        "no-shadowed-variable": false,
+        "only-arrow-functions": false,
+        "no-shadowed-variable": true,
         "class-name": true,
         "curly": false,
         "eofline": false,

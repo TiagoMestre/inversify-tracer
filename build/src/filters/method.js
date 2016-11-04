@@ -1,4 +1,3 @@
-"use strict";
 const base_1 = require('./base');
 const constants_1 = require('./constants');
 class MethodFilter extends base_1.BaseFilter {

@@ -8,6 +8,7 @@ tests
 reports
 coverage
 examples
+build/tests
 
 .npmignore
 .gitignore

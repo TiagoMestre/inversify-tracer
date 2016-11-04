@@ -12,13 +12,13 @@ const defaultOptions: WatcherOptions = {
 	inspectReturnedPromise: true
 };
 
-function merge (options: any, defaultOptions: any) {
+function merge (base: any, newObj: any) {
 
-	for (let prop in defaultOptions) {
-		options[prop] = options[prop] || defaultOptions[prop];
+	for (let prop in newObj) {
+		base[prop] = base[prop] || newObj[prop];
 	}
 
-	return options;
+	return base;
 }
 
 export class InversifyWatcher {

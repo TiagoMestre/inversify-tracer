@@ -1,4 +1,3 @@
-"use strict";
 class InvalidFilterException extends Error {
     constructor(filter) {
         super(`Invalid filter (${filter})`);

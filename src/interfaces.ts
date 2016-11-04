@@ -1,6 +1,5 @@
 
 interface BaseInfo {
-	objectId: number;
 	className: string;
 	methodName: string;
 }

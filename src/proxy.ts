@@ -1,3 +1,4 @@
+'use strict';
 
 import { EventEmitter } from 'events';
 import { OnCall, OnReturn } from './interfaces';
@@ -19,7 +20,6 @@ export interface ProxyListenerOptions {
 
 export class ProxyListener {
 
-	private idCounter: number = 0;
 	private emitter: EventEmitter;
 	private methodFilter: MethodFilter;
 
@@ -33,13 +33,12 @@ export class ProxyListener {
 
 	public apply(object: any) {
 
-		const className = object.constructor.name;
-		const objectId: number = this.idCounter++;
+		const self = this;
 
 		let properties: Set<string> = new Set<string>();
 		let obj = object;
 
-		while (Object.getPrototypeOf(obj) !== null) {
+		while (Object.getPrototypeOf(obj)) {
 
 			Object.getOwnPropertyNames(obj).forEach((propertyName) => {
 				properties.add(propertyName);
@@ -57,41 +56,46 @@ export class ProxyListener {
 		});
 
 		methods.filter((methodName: string) => {
-			return this.methodFilter.match(className, methodName);
+			return this.methodFilter.match(object.constructor.name, methodName);
 		});
 
 		methods.forEach((methodName: string) => {
 
 			const params = getParamNames(object[methodName]);
-			object[methodName] = new Proxy(object[methodName], {
-				apply: (method: any, object: any, args: any[]) => {
 
-					this.emitter.emit('call', {
-						objectId,
-						className,
-						methodName,
-						arguments: args.length > params.length ? args : args.concat(new Array(params.length - args.length)),
-						parameters: params
+			const method = object[methodName];
+
+			const proxyMethod = function() {
+
+				const args = Array.from(arguments);
+
+				self.emitter.emit('call', {
+					className: object.constructor.name,
+					methodName,
+					arguments: arguments.length > params.length ? args : args.concat(new Array(params.length - args.length)),
+					parameters: params
+				});
+
+				const result = method.apply(object, arguments);
+
+				if (self.options.inspectReturnedPromise && result instanceof Promise) {
+
+					return result.then((value: any) => {
+						self.emitter.emit('return', { className: object.constructor.name, methodName, result: value });
+						return Promise.resolve(value);
+					}).catch((error: any) => {
+						self.emitter.emit('return', { className: object.constructor.name, methodName, error });
+						return Promise.reject(error);
 					});
 
-					const result = method.apply(object, args);
-
-					if (this.options.inspectReturnedPromise && result instanceof Promise) {
-
-						return result.then((value: any) => {
-							this.emitter.emit('return', { objectId, className, methodName, result: value });
-							return Promise.resolve(value);
-						}).catch((error: any) => {
-							this.emitter.emit('return', { objectId, className, methodName, error });
-							return Promise.reject(error);
-						});
-
-					} else {
-						this.emitter.emit('return', { objectId, className, methodName, result });
-						return result;
-					}
+				} else {
+					self.emitter.emit('return', { className: object.constructor.name, methodName, result });
+					return result;
 				}
-			});
+			};
+
+			object[methodName] = proxyMethod;
+			object[methodName].id = Math.floor(Math.random() * 200);
 		});
 	}
 }

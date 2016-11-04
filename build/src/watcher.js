@@ -1,15 +1,15 @@
-"use strict";
 const events_1 = require('events');
 const filters_1 = require('./filters');
 const proxy_1 = require('./proxy');
 const defaultOptions = {
-    filters: ['*:*']
+    filters: ['*:*'],
+    inspectReturnedPromise: true
 };
-function merge(options, defaultOptions) {
-    for (let prop in defaultOptions) {
-        options[prop] = options[prop] || defaultOptions[prop];
+function merge(base, newObj) {
+    for (let prop in newObj) {
+        base[prop] = base[prop] || newObj[prop];
     }
-    return options;
+    return base;
 }
 class InversifyWatcher {
     constructor(options) {
@@ -26,8 +26,8 @@ class InversifyWatcher {
             inspectReturnedPromise: options.inspectReturnedPromise
         });
     }
-    on(event, callback) {
-        this.emitter.on(event, callback);
+    on(eventName, callback) {
+        this.emitter.on(eventName, callback);
     }
     build() {
         return (planAndResolve) => {

@@ -1,4 +1,3 @@
-"use strict";
 const minimatch = require('minimatch');
 class BaseFilter {
     constructor(includeFilters, excludeFilters) {
