@@ -2,9 +2,7 @@
 
 import 'reflect-metadata';
 import { interfaces, Kernel, injectable, inject } from 'inversify';
-import * as minimatch from 'minimatch';
-import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
-import { InversifyTracer, CallInfo, ReturnInfo } from './index';
+import { InversifyTracer, CallInfo, ReturnInfo } from './../src/index';
 
 interface Warrior {
     attack(value: number, otherValue: string): number;
@@ -47,7 +45,7 @@ kernel.bind<Ninja>('Ninja').to(Ninja);
 kernel.bind<Weapon>('Weapon').to(Katana);
 
 const tracer = new InversifyTracer({
-    filters: ['Ninja:*', '!Ninja:attack']
+    filters: ['Ninja:*', '!Ninja:hide']
 });
 
 tracer.on('call', (callInfo: CallInfo) => {
