@@ -2,7 +2,10 @@
 import * as minimatch from 'minimatch';
 
 import { BaseFilter } from './base';
-import { includeRegex, excludeRegex, classIncludeRegex, classExcludeRegex } from './constants';
+import { includeRegex, excludeRegex } from './constants';
+
+const classIncludeRegex: RegExp = /^([A-Z|a-z|0-9|\_|\$|\*]+):.+$/;
+const classExcludeRegex: RegExp = /^(![A-Z|a-z|0-9|\_|\$\*]+):\*$/;
 
 export class ClassFilter extends BaseFilter {
 

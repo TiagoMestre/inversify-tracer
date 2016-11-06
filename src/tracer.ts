@@ -3,11 +3,11 @@ import { EventEmitter } from 'events';
 import { interfaces } from 'inversify';
 import * as minimatch from 'minimatch';
 
-import { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+import { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
 import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
 import { ProxyListener } from './proxy';
 
-const defaultOptions: WatcherOptions = {
+const defaultOptions: TracerOptions = {
     filters: ['*:*'],
 	inspectReturnedPromise: true
 };
@@ -21,7 +21,7 @@ function merge (base: any, newObj: any) {
 	return base;
 }
 
-export class InversifyWatcher {
+export class InversifyTracer {
 
 	private emitter: EventEmitter = new EventEmitter();
 
@@ -29,7 +29,7 @@ export class InversifyWatcher {
 
 	private proxyListener: ProxyListener;
 
-	constructor(options?: WatcherOptions) {
+	constructor(options?: TracerOptions) {
 
 		if (options) {
 			options = merge(options, defaultOptions);

@@ -1,10 +1,10 @@
 
-import { InversifyWatcher } from './watcher';
-import { WatcherOptions } from './interfaces';
+import { InversifyTracer } from './tracer';
+import { TracerOptions } from './interfaces';
 
 import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
 
-export { InversifyWatcher } from './watcher';
+export { InversifyTracer } from './tracer';
 
-export { WatcherOptions, CallInfo, ReturnInfo } from './interfaces';
+export { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
 export * from './errors';

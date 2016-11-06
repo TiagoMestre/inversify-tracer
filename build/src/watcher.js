@@ -1,3 +1,4 @@
+"use strict";
 const events_1 = require('events');
 const filters_1 = require('./filters');
 const proxy_1 = require('./proxy');

@@ -1,3 +1,4 @@
+'use strict';
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -32,7 +33,6 @@ let Ninja = class Ninja {
     }
     attack(value, otherValue) {
         return this.weapon.use(value);
-        ;
     }
 };
 Ninja = __decorate([
@@ -44,18 +44,17 @@ let kernel = new inversify_1.Kernel();
 kernel.bind('Warrior').to(Ninja);
 kernel.bind('Ninja').to(Ninja);
 kernel.bind('Weapon').to(Katana);
-const watcher = new index_1.InversifyWatcher({
+const tracer = new index_1.InversifyTracer({
     filters: ['Ninja:*', '!Ninja:attack']
 });
-watcher.on('call', (callInfo) => {
+tracer.on('call', (callInfo) => {
     let comb = callInfo.parameters.map((param, i) => { return `${param}: ${callInfo.arguments[i]}`; });
     console.log(`${new Date().toISOString()} ${callInfo.className} ${callInfo.methodName} called ${comb}`);
 });
-watcher.on('return', (returnInfo) => {
+tracer.on('return', (returnInfo) => {
     console.log(`${new Date().toISOString()} ${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
-kernel.applyMiddleware(watcher.build());
+kernel.applyMiddleware(tracer.build());
 let warrior = kernel.get('Warrior');
 warrior.attack(Math.floor(Math.random() * 10), 'asd');
-let ninja = kernel.get('Ninja');
 //# sourceMappingURL=proto.js.map

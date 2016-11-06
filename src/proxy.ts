@@ -1,4 +1,3 @@
-'use strict';
 
 import { EventEmitter } from 'events';
 import { OnCall, OnReturn } from './interfaces';
@@ -55,25 +54,24 @@ export class ProxyListener {
 			}
 		});
 
-		methods.filter((methodName: string) => {
+		methods = methods.filter((methodName: string) => {
 			return this.methodFilter.match(object.constructor.name, methodName);
 		});
 
 		methods.forEach((methodName: string) => {
 
-			const params = getParamNames(object[methodName]);
-
+			const parameters = getParamNames(object[methodName]);
 			const method = object[methodName];
 
-			const proxyMethod = function() {
+			object[methodName] = function() {
 
 				const args = Array.from(arguments);
 
 				self.emitter.emit('call', {
 					className: object.constructor.name,
 					methodName,
-					arguments: arguments.length > params.length ? args : args.concat(new Array(params.length - args.length)),
-					parameters: params
+					arguments: arguments.length > parameters.length ? args : args.concat(new Array(parameters.length - args.length)),
+					parameters
 				});
 
 				const result = method.apply(object, arguments);
@@ -93,9 +91,6 @@ export class ProxyListener {
 					return result;
 				}
 			};
-
-			object[methodName] = proxyMethod;
-			object[methodName].id = Math.floor(Math.random() * 200);
 		});
 	}
 }

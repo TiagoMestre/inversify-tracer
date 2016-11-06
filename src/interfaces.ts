@@ -13,7 +13,7 @@ export interface ReturnInfo extends BaseInfo {
 	result: any;
 }
 
-export interface WatcherOptions {
+export interface TracerOptions {
 	filters?: string[];
 	inspectReturnedPromise?: boolean;
 }
