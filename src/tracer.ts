@@ -1,6 +1,6 @@
 
 import { EventEmitter } from 'events';
-import { interfaces } from 'inversify';
+import { interfaces, Kernel } from 'inversify';
 import * as minimatch from 'minimatch';
 
 import { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
@@ -61,11 +61,33 @@ export class InversifyTracer {
 		return this;
 	}
 
-	public build(): interfaces.Middleware {
+	public apply(kernel: any): void { // interfaces.Middleware {
 
+		for (let i in kernel._bindingDictionary._dictionary) {
+			for (let j in kernel._bindingDictionary._dictionary[i].value) {
+				kernel._bindingDictionary._dictionary[i].value[j].onActivation = (context: any, target: any) => {
+
+					if (this.classFilter.match(target.constructor.name)) {
+						this.proxyListener.apply(target);
+					}
+
+					return target;
+				};
+			}
+		}
+
+		/*
 		return (planAndResolve: interfaces.PlanAndResolve<any>): interfaces.PlanAndResolve<any> => {
 
 			return (planAndResolveArgs: interfaces.PlanAndResolveArgs) => {
+
+				let nextContextInterceptor = planAndResolveArgs.contextInterceptor;
+				planAndResolveArgs.contextInterceptor = (context: interfaces.Context) => {
+
+					let nextContext = nextContextInterceptor(context);
+					console.log(nextContext.plan.rootRequest.childRequests[0].);
+					return nextContext;
+				};
 
 				const objects = planAndResolve(planAndResolveArgs);
 
@@ -74,11 +96,11 @@ export class InversifyTracer {
 				});
 
 				objectsToProxy.forEach((object) => {
-					return this.proxyListener.apply(object);
+					
 				});
 
 				return objects;
 			};
-		};
+		};*/
 	}
 }

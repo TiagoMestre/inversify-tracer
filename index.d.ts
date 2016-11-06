@@ -12,12 +12,12 @@ interface BaseInfo {
 
 declare module 'inversify-tracer' {
 
-	import { interfaces } from 'inversify';
+	import { interfaces, Kernel } from 'inversify';
 
 	export class InversifyTracer {
 		constructor(options?: TracerOptions);
 		on(eventName: string, callback: Function): void;
-		build(): interfaces.Middleware;
+		apply(kernel: Kernel): void;
 	} 
 
 	export interface CallInfo extends BaseInfo {

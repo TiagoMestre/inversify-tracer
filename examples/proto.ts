@@ -40,12 +40,11 @@ class Ninja implements Warrior {
 
 let kernel = new Kernel();
 
-kernel.bind<Warrior>('Warrior').to(Ninja);
-kernel.bind<Ninja>('Ninja').to(Ninja);
 kernel.bind<Weapon>('Weapon').to(Katana);
+kernel.bind<Warrior>('Warrior').to(Ninja);
 
 const tracer = new InversifyTracer({
-    filters: ['Ninja:*', '!Ninja:hide']
+    filters: ['*:*', '!Ninja:hide']
 });
 
 tracer.on('call', (callInfo: CallInfo) => {
@@ -57,7 +56,7 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
     console.log(`${new Date().toISOString()} ${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
 
-kernel.applyMiddleware(tracer.build());
+tracer.apply(kernel);
 
 let warrior = kernel.get<Warrior>('Warrior');
 
