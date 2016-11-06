@@ -2,7 +2,8 @@
   "name": "inversify-tracer",
   "version": "1.0.0",
   "description": "",
-  "main": "build/src/index.js",
+  "main": "lib/src/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "setup": "npm install",
     "build": "gulp lint && tsc",

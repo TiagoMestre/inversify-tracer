@@ -8,7 +8,7 @@
         "removeComments": true,
         "declaration": false,
         "preserveConstEnums": true,
-        "outDir": "build",
+        "outDir": "lib",
         "moduleResolution": "node",
         "pretty": true,
         "experimentalDecorators": true,

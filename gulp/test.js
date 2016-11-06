@@ -28,19 +28,19 @@ module.exports = function (gulp) {
 	});
 
 	gulp.task('test:mocha', function () {
-		return gulp.src('build/tests/**/*.js').pipe(mocha(config.mocha))
+		return gulp.src('lib/tests/**/*.js').pipe(mocha(config.mocha))
 	});
 
 	gulp.task('pre-test', function () {
 		return gulp
-			.src('build/src/**/*.js')
+			.src('lib/src/**/*.js')
 			.pipe(istanbul())
 			.pipe(istanbul.hookRequire());
 	});
 
 	gulp.task('test:istanbul', ['pre-test'], function () {
 		return gulp
-			.src('build/tests/**/*.js')
+			.src('lib/tests/**/*.js')
 			.pipe(mocha(config.mocha))
 			.pipe(istanbul.writeReports({
 				reporters: ['json','text-summary'],

@@ -9,6 +9,6 @@ coverage
 
 .vscode
 *.js.map
-build
-!build/src/**/*.js
+lib
+!lib/src/**/*.js
 

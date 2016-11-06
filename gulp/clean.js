@@ -5,11 +5,11 @@ const del = require('del');
 module.exports = function (gulp) {
 
 	gulp.task('clean', () => {
-		return del(['build','reports','coverage']);
+		return del(['lib','reports','coverage']);
 	});
 
 	gulp.task('clean:all', () => {
-		return del(['build','node_modules','reports','coverage']);
+		return del(['lib','node_modules','reports','coverage']);
 	});
 
 	gulp.task('clean:tests', () => {
