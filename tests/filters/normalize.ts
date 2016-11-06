@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { InvalidFilterException } from './../../src/errors';
+import { InvalidFilterError } from './../../src/errors';
 import { normalizeFilters } from './../../src/filters';
 
 describe('normalizeFilters', () => {
@@ -18,8 +18,8 @@ describe('normalizeFilters', () => {
 	});
 
 	context('invalid filter', () => {
-		it('should throw InvalidFilterException', () => {
-			expect(() => { normalizeFilters(['Ninja/attack']); }).to.throws(InvalidFilterException);
+		it('should throw InvalidFilterError', () => {
+			expect(() => { normalizeFilters(['Ninja/attack']); }).to.throws(InvalidFilterError);
 		});
 	});
 });

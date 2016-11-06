@@ -19,7 +19,8 @@
     },
     "include": [
         "src/**/*.ts",
-        "tests/**/*.ts"
+        "tests/**/*.ts",
+        "index.d.ts"
     ],
     "compileOnSave": true
 }

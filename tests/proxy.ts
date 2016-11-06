@@ -6,5 +6,9 @@ describe('ProxyListener', () => {
 
 	describe('apply', () => {
 
+		context('', () => {
+			const proxyListener = new ProxyListener(null, null, null);
+
+		});
 	});
 });

@@ -17,6 +17,3 @@ export interface TracerOptions {
 	filters?: string[];
 	inspectReturnedPromise?: boolean;
 }
-
-export declare type OnCall = (callInfo: CallInfo) => void;
-export declare type OnReturn = (returnInfo: ReturnInfo) => void;

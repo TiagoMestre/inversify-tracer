@@ -1,6 +1,5 @@
 
 import { EventEmitter } from 'events';
-import { OnCall, OnReturn } from './interfaces';
 import { MethodFilter } from './filters';
 
 const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg;

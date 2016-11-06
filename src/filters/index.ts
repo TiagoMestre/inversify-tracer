@@ -1,6 +1,6 @@
 
 import { filterRegex } from './constants';
-import { InvalidFilterException } from './../errors';
+import { InvalidFilterError } from './../errors';
 
 export * from './class';
 export * from './method';
@@ -11,7 +11,7 @@ export function normalizeFilters(filters: string[]): string[] {
 
 		const values = filter.match(filterRegex);
 
-		if (!values) throw new InvalidFilterException(filter);
+		if (!values) throw new InvalidFilterError(filter);
 
 		return `${values[1]}:${values[2] || '*'}`;
 	});

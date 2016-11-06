@@ -5,6 +5,7 @@ import * as minimatch from 'minimatch';
 
 import { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
 import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
+import { InvalidTracerEventError } from './errors';
 import { ProxyListener } from './proxy';
 
 const defaultOptions: TracerOptions = {
@@ -51,7 +52,13 @@ export class InversifyTracer {
 	}
 
 	public on(eventName: string, callback: any) {
+
+		if (eventName !== 'call' && eventName !== 'return') {
+			throw new InvalidTracerEventError(eventName);
+		}
+
 		this.emitter.on(eventName, callback);
+		return this;
 	}
 
 	public build(): interfaces.Middleware {

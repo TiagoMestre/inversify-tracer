@@ -8,9 +8,11 @@
 You can get the latest release and the type definitions using npm:
 
 ```
-$ npm install inversify-tracer --save
+$ npm install inversify-tracer @types/inversify-tracer --save
 ```
 
 ## Configuration
+
+
 
 ### Filters
