@@ -31,8 +31,6 @@ export class ProxyListener {
 
 	public apply(object: any) {
 
-		const self = this;
-
 		let properties: Set<string> = new Set<string>();
 		let obj = object;
 
@@ -62,11 +60,11 @@ export class ProxyListener {
 			const parameters = getParamNames(object[methodName]);
 			const method = object[methodName];
 
-			object[methodName] = function() {
+			object[methodName] = () => {
 
 				const args = Array.from(arguments);
 
-				self.emitter.emit('call', {
+				this.emitter.emit('call', {
 					className: object.constructor.name,
 					methodName,
 					arguments: arguments.length > parameters.length ? args : args.concat(new Array(parameters.length - args.length)),
@@ -75,18 +73,18 @@ export class ProxyListener {
 
 				const result = method.apply(object, arguments);
 
-				if (self.options.inspectReturnedPromise && result instanceof Promise) {
+				if (this.options.inspectReturnedPromise && result instanceof Promise) {
 
 					return result.then((value: any) => {
-						self.emitter.emit('return', { className: object.constructor.name, methodName, result: value });
+						this.emitter.emit('return', { className: object.constructor.name, methodName, result: value });
 						return Promise.resolve(value);
 					}).catch((error: any) => {
-						self.emitter.emit('return', { className: object.constructor.name, methodName, error });
+						this.emitter.emit('return', { className: object.constructor.name, methodName, error });
 						return Promise.reject(error);
 					});
 
 				} else {
-					self.emitter.emit('return', { className: object.constructor.name, methodName, result });
+					this.emitter.emit('return', { className: object.constructor.name, methodName, result });
 					return result;
 				}
 			};

@@ -17,9 +17,15 @@ $ npm install @types/inversify-tracer --save-dev
 
 ## Configuration
 
+| Property              | Type      | Default       | Description                                   |
+|---                    |---        |---            |---                                                            |
+| filters               | string[]  | \[\'\*\:\*\'\]| Filters that choose which classes and method will be traced   | 
+| inspectReturnedPromise| boolean   | true          | Inpect the value from the returned Promise object             |
+
+
 ### Filters
 
-Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced
+Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced.
 
 **Filter examples**:
 
@@ -30,12 +36,20 @@ Filters allow you to specify the classes and/or functions you want to trace. By 
 ```
 
 ## Events
-
 ### Event: 'call'
 
 + callInfo [\<CallInfo\>](https://github.com/tiagomestre/inversify-tracer#CallInfo).
 
 Emitted each time a class method is called.
+
+### CallInfo
+
+| Property      | Type      | Description                                               |
+|---            |---        |---                                                        |
+| className     | string    | Name of the class                                         | 
+| methodName    | string    | Name of the method                                        |
+| parameters    | string[]  | Array with the name of the method's parameters            |
+| arguments     | any[]     | Array of values passed to the method                      |
 
 ### Event: 'return'
 
@@ -43,30 +57,19 @@ Emitted each time a class method is called.
 
 Emitted each time a class method ends.
 
-## Interfaces
-
-### CallInfo
-
-| Property      | Type      | Description |
-|---            |---        |---            |
-| className     | string    | Name of the class | 
-| methodName    | string    | Name of the method |
-| parameters    | string[]  | Array with names of the parameters in the called method |
-| arguments     | any[]     | Array of values passed to the method |
-
 ### ReturnInfo
 
-| Property      | Type      | Description |
-|---            |---        |---            |
-| className     | string    | Name of the class | 
-| methodName    | string    | Name of the method |
-| result        | any       | Returned value of the method |
+| Property      | Type      | Description                   |
+|---            |---        |---                            |
+| className     | string    | Name of the class             | 
+| methodName    | string    | Name of the method            |
+| result        | any       | Returned value of the method  |
 
 ## Example
 ```ts
 import 'reflect-metadata';
 import { injectable, inject, Kernel } from 'inversify';
-import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
+import { InversifyTracer, CallInfo, ReturnInfo } from 'inversify-tracer';
 
 interface Warrior {
     attack(): number;
