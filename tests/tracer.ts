@@ -15,4 +15,8 @@ describe('InversifyTracer', () => {
 			});
 		});
 	});
+
+	describe('apply', () => {
+
+	});
 });

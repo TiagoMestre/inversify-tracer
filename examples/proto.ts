@@ -12,6 +12,7 @@ interface Weapon {
     use(force: number): number;
 }
 
+
 @injectable()
 class Katana implements Weapon {
 
@@ -44,7 +45,7 @@ kernel.bind<Weapon>('Weapon').to(Katana);
 kernel.bind<Warrior>('Warrior').to(Ninja);
 
 const tracer = new InversifyTracer({
-    filters: ['*:*', '!Ninja:hide']
+    filters: ['Katana:*']
 });
 
 tracer.on('call', (callInfo: CallInfo) => {

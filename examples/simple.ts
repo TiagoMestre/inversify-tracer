@@ -1,22 +1,3 @@
-# inversify-tracer
-
-[![Build Status](https://travis-ci.org/TiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/TiagoMestre/inversify-tracer)
-[![Coverage Status](https://coveralls.io/repos/github/TiagoMestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/TiagoMestre/inversify-tracer?branch=dev)
-
-A console logger middleware for [InversifyJS](https://github.com/inversify/InversifyJS).
-
-
-## Instalation
-
-You can get the latest release and the type definitions using npm:
-
-```
-$ npm install inversify-tracer --save
-$ npm install @types/inversify-tracer --save-dev
-```
-
-## Example
-```ts
 import 'reflect-metadata';
 import { injectable, inject, Kernel } from 'inversify';
 import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
@@ -65,7 +46,6 @@ tracer.on('call', (callInfo: CallInfo) => {
     console.log(`${callInfo.className} ${callInfo.methodName} called ${parametersWithValue}`);
 });
 
-
 tracer.on('return', (returnInfo: ReturnInfo) => {
     console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
@@ -75,33 +55,3 @@ tracer.apply(kernel);
 const warrior = kernel.get<Warrior>('Warrior');
 
 warrior.attack();
-```
-
-**Result:**
-
-```
-Ninja attack called
-Katana use called force: 2
-Katana use returned 400
-Ninja attack returned 400
-```
-
-## Configuration
-
-### Filters
-
-Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced
-
-**Filter examples**:
-
-```ts
-['*:*', '!Ninja:*'] // trace every class, expect Ninja
-['Ninja:*', '!Ninja:hide'] // trace every method of class Ninja, expect the hide method
-['*:attack'] // trace attack method from every class
-```
-
-## Events
-
-### call
-
-### return

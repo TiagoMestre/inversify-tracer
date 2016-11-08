@@ -8,7 +8,6 @@ describe('ProxyListener', () => {
 
 		context('', () => {
 			const proxyListener = new ProxyListener(null, null, null);
-
 		});
 	});
 });

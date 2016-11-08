@@ -75,32 +75,5 @@ export class InversifyTracer {
 				};
 			}
 		}
-
-		/*
-		return (planAndResolve: interfaces.PlanAndResolve<any>): interfaces.PlanAndResolve<any> => {
-
-			return (planAndResolveArgs: interfaces.PlanAndResolveArgs) => {
-
-				let nextContextInterceptor = planAndResolveArgs.contextInterceptor;
-				planAndResolveArgs.contextInterceptor = (context: interfaces.Context) => {
-
-					let nextContext = nextContextInterceptor(context);
-					console.log(nextContext.plan.rootRequest.childRequests[0].);
-					return nextContext;
-				};
-
-				const objects = planAndResolve(planAndResolveArgs);
-
-				const objectsToProxy = objects.filter((object) => {
-					return this.classFilter.match(object.constructor.name);
-				});
-
-				objectsToProxy.forEach((object) => {
-					
-				});
-
-				return objects;
-			};
-		};*/
 	}
 }
