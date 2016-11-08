@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "lib/src/index.js",
-  "types": "lib/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "setup": "npm install",
     "build": "gulp lint && tsc",
@@ -16,6 +16,7 @@
   },
   "keywords": [
     "inversify",
+    "middleware",
     "trace"
   ],
   "author": "Tiago Fernandes",
