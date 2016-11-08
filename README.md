@@ -62,12 +62,12 @@ const tracer = new InversifyTracer();
 
 tracer.on('call', (callInfo: CallInfo) => {
     const parametersWithValue = callInfo.parameters.map((param: any, i: number) => `${param}:${callInfo.arguments[i]}`);
-    console.log(`${callInfo.className} ${callInfo.methodName} called ${parametersWithValue}`);
+    console.debug(`${callInfo.className} ${callInfo.methodName} called ${parametersWithValue}`);
 });
 
 
 tracer.on('return', (returnInfo: ReturnInfo) => {
-    console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
+    console.debug(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
 
 tracer.apply(kernel);
@@ -102,6 +102,33 @@ Filters allow you to specify the classes and/or functions you want to trace. By 
 
 ## Events
 
-### call
+### Event: 'call'
 
-### return
++ callInfo [\<CallInfo\>](https://github.com/tiagomestre/inversify-tracer#CallInfo).
+
+Emitted each time a class method is called.
+
+### Event: 'return'
+
++ returnInfo [\<ReturnInfo\>](https://github.com/tiagomestre/inversify-tracer#ReturnInfo).
+
+Emitted each time a class method ends.
+
+## Interfaces
+
+### CallInfo
+
+| Property      | Type      | Description |
+|---            |---        |---            |
+| className     | string    | Name of the class | 
+| methodName    | string    | Name of the method |
+| parameters    | string[]  | Array with names of the parameters in the called method |
+| arguments     | any[]     | Array of values passed to the method |
+
+### ReturnInfo
+
+| Property      | Type      | Description |
+|---            |---        |---            |
+| className     | string    | Name of the class | 
+| methodName    | string    | Name of the method |
+| result        | any       | Returned value of the method |
