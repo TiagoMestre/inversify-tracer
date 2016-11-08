@@ -45,6 +45,15 @@ describe('ClassFilter', () => {
 
 			const classFilter = new ClassFilter([]);
 
+			it('should return false matching Ninja', () => {
+				expect(classFilter.match('Ninja')).to.be.false;
+			});
+		});
+
+		context('partial filter', () => {
+
+			const classFilter = new ClassFilter(['Nin*:*']);
+
 			it('should return true matching Ninja', () => {
 				expect(classFilter.match('Ninja')).to.be.false;
 			});

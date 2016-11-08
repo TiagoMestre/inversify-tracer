@@ -61,7 +61,7 @@ export class InversifyTracer {
 		return this;
 	}
 
-	public apply(kernel: any): void { // interfaces.Middleware {
+	public apply(kernel: any): void {
 
 		for (let i in kernel._bindingDictionary._dictionary) {
 			for (let j in kernel._bindingDictionary._dictionary[i].value) {
