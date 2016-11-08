@@ -15,6 +15,53 @@ $ npm install inversify-tracer --save
 $ npm install @types/inversify-tracer --save-dev
 ```
 
+## Configuration
+
+### Filters
+
+Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced
+
+**Filter examples**:
+
+```ts
+['*:*', '!Ninja:*'] // trace every class, expect Ninja
+['Ninja:*', '!Ninja:hide'] // trace every method of class Ninja, expect the hide method
+['*:attack'] // trace attack method from every class
+```
+
+## Events
+
+### Event: 'call'
+
++ callInfo [\<CallInfo\>](https://github.com/tiagomestre/inversify-tracer#CallInfo).
+
+Emitted each time a class method is called.
+
+### Event: 'return'
+
++ returnInfo [\<ReturnInfo\>](https://github.com/tiagomestre/inversify-tracer#ReturnInfo).
+
+Emitted each time a class method ends.
+
+## Interfaces
+
+### CallInfo
+
+| Property      | Type      | Description |
+|---            |---        |---            |
+| className     | string    | Name of the class | 
+| methodName    | string    | Name of the method |
+| parameters    | string[]  | Array with names of the parameters in the called method |
+| arguments     | any[]     | Array of values passed to the method |
+
+### ReturnInfo
+
+| Property      | Type      | Description |
+|---            |---        |---            |
+| className     | string    | Name of the class | 
+| methodName    | string    | Name of the method |
+| result        | any       | Returned value of the method |
+
 ## Example
 ```ts
 import 'reflect-metadata';
@@ -85,50 +132,3 @@ Katana use called force: 2
 Katana use returned 400
 Ninja attack returned 400
 ```
-
-## Configuration
-
-### Filters
-
-Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced
-
-**Filter examples**:
-
-```ts
-['*:*', '!Ninja:*'] // trace every class, expect Ninja
-['Ninja:*', '!Ninja:hide'] // trace every method of class Ninja, expect the hide method
-['*:attack'] // trace attack method from every class
-```
-
-## Events
-
-### Event: 'call'
-
-+ callInfo [\<CallInfo\>](https://github.com/tiagomestre/inversify-tracer#CallInfo).
-
-Emitted each time a class method is called.
-
-### Event: 'return'
-
-+ returnInfo [\<ReturnInfo\>](https://github.com/tiagomestre/inversify-tracer#ReturnInfo).
-
-Emitted each time a class method ends.
-
-## Interfaces
-
-### CallInfo
-
-| Property      | Type      | Description |
-|---            |---        |---            |
-| className     | string    | Name of the class | 
-| methodName    | string    | Name of the method |
-| parameters    | string[]  | Array with names of the parameters in the called method |
-| arguments     | any[]     | Array of values passed to the method |
-
-### ReturnInfo
-
-| Property      | Type      | Description |
-|---            |---        |---            |
-| className     | string    | Name of the class | 
-| methodName    | string    | Name of the method |
-| result        | any       | Returned value of the method |
