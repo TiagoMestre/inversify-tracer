@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/TiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/TiagoMestre/inversify-tracer)
 [![Coverage Status](https://coveralls.io/repos/github/TiagoMestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/TiagoMestre/inversify-tracer?branch=dev)
 
-inversify-tracer is a tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
+Tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
 
 ## Instalation
 
@@ -11,7 +11,6 @@ You can get the latest release and the type definitions using npm:
 
 ```
 $ npm install inversify-tracer --save
-$ npm install @types/inversify-tracer --save-dev
 ```
 
 ## Configuration
