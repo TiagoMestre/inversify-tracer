@@ -11,6 +11,8 @@ examples
 lib
 !lib/src/**/*.js
 
+*.js.map
+
 .npmignore
 .gitignore
 .travis.yml
