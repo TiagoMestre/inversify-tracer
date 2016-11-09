@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { injectable, inject, Kernel } from 'inversify';
-import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
+import { InversifyTracer, CallInfo, ReturnInfo } from 'inversify-tracer';
 
 interface Warrior {
     attack(): number;
