@@ -1,4 +1,4 @@
-// Type definitions for inversify-tracer 1.0.0
+// Type definitions for inversify-tracer 1.0.5
 // Project: https://github.com/tiagomestre/inversify-tracer
 // Definitions by: TiagoMestre <https://github.com/tiagomestre>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
