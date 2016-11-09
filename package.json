@@ -1,7 +1,7 @@
 {
   "name": "inversify-tracer",
   "version": "1.0.0",
-  "description": "",
+  "description": "inversify-tracer is a tool that allows the developer to trace methods of objects created by InversifyJS",
   "main": "lib/src/index.js",
   "types": "index.d.ts",
   "scripts": {
