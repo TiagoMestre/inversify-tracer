@@ -37,7 +37,7 @@ Filters allow you to specify the classes and/or functions you want to trace. By 
 ## Events
 ### Event: 'call'
 
-+ callInfo [\<CallInfo\>](https://github.com/tiagomestre/inversify-tracer#CallInfo).
++ callInfo \<CallInfo\>
 
 Emitted each time a class method is called.
 
@@ -52,7 +52,7 @@ Emitted each time a class method is called.
 
 ### Event: 'return'
 
-+ returnInfo [\<ReturnInfo\>](https://github.com/tiagomestre/inversify-tracer#ReturnInfo).
++ returnInfo \<ReturnInfo\>
 
 Emitted each time a class method ends.
 
