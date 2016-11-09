@@ -1,0 +1,64 @@
+{
+  "name": "inversify-tracer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/src/index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "setup": "npm install",
+    "build": "gulp lint && tsc",
+    "test": "gulp test",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiagoMestre/inversify-tracer.git"
+  },
+  "keywords": [
+    "inversify",
+    "middleware",
+    "trace"
+  ],
+  "author": "Tiago Fernandes",
+  "contributors": [
+    {
+      "name": "Tiago Fernandes",
+      "url": "https://github.com/TiagoMestre"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TiagoMestre/inversify-tracer/issues"
+  },
+  "homepage": "https://github.com/TiagoMestre/inversify-tracer#readme",
+  "peerDependencies": {
+    "inversify": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "3.4.34",
+    "@types/inversify": "2.0.31",
+    "@types/minimatch": "2.0.29",
+    "@types/mocha": "2.2.32",
+    "@types/node": "6.0.46",
+    "@types/sinon": "1.16.31",
+    "chai": "3.5.0",
+    "coveralls": "2.11.12",
+    "del": "2.2.1",
+    "gulp": "3.9.1",
+    "gulp-istanbul": "1.0.0",
+    "gulp-mocha": "3.0.0",
+    "gulp-shell": "0.5.2",
+    "gulp-tslint": "6.0.2",
+    "inversify": "2.0.0",
+    "mochawesome": "1.5.3",
+    "reflect-metadata": "0.1.8",
+    "remap-istanbul": "0.6.4",
+    "require-directory": "2.1.1",
+    "sinon": "1.17.5",
+    "tslint": "3.15.1",
+    "typescript": "2.0.6"
+  },
+  "dependencies": {
+    "minimatch": "3.0.3"
+  }
+}

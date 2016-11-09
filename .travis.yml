@@ -1,0 +1,12 @@
+language: node_js
+
+node_js:
+- 6.8.1
+- 6.9.1
+- node
+
+install:
+- npm run setup
+- npm run build
+
+after_success: npm run coveralls
