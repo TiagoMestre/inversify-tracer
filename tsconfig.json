@@ -14,8 +14,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "baseUrl": "",
-        "typeRoots": ["node_modules/@types"],
-        "noImplicitUseStrict": true
+        "typeRoots": ["node_modules/@types"]
     },
     "include": [
         "src/**/*.ts",

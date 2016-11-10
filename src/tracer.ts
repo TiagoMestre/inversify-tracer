@@ -63,9 +63,18 @@ export class InversifyTracer {
 
 	public apply(kernel: any): void {
 
-		for (let i in kernel._bindingDictionary._dictionary) {
-			for (let j in kernel._bindingDictionary._dictionary[i].value) {
-				kernel._bindingDictionary._dictionary[i].value[j].onActivation = (context: any, target: any) => {
+		// console.log((kernel as any)._bindingDictionary._dictionary);
+
+		kernel._bindingDictionary._dictionary.forEach((keyValuePair: interfaces.KeyValuePair<interfaces.Binding<any>>) => {
+
+			keyValuePair.value.forEach((binding) => {
+
+				if (binding.cache) {
+					console.log('cache: ' + binding.cache.constructor.name);
+					return this.proxyListener.apply(binding.cache);
+				}
+
+				binding.onActivation = (context: any, target: any) => {
 
 					if (this.classFilter.match(target.constructor.name)) {
 						this.proxyListener.apply(target);
@@ -73,7 +82,7 @@ export class InversifyTracer {
 
 					return target;
 				};
-			}
-		}
+			});
+		});
 	}
 }

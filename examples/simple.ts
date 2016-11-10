@@ -36,7 +36,7 @@ class Ninja implements Warrior {
 
 const kernel = new Kernel();
 
-kernel.bind<Weapon>('Weapon').to(Katana);
+kernel.bind<Weapon>('Weapon').toConstantValue(new Katana());
 kernel.bind<Warrior>('Warrior').to(Ninja);
 
 const tracer = new InversifyTracer();
@@ -52,6 +52,8 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
 
 tracer.apply(kernel);
 
+kernel.get<Katana>('Weapon');
 const warrior = kernel.get<Warrior>('Warrior');
 
 warrior.attack();
+
