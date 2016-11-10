@@ -10,5 +10,4 @@ coverage
 .vscode
 *.js.map
 lib
-!lib/src/**/*.js
 
