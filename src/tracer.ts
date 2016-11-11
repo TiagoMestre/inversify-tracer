@@ -63,14 +63,11 @@ export class InversifyTracer {
 
 	public apply(kernel: any): void {
 
-		// console.log((kernel as any)._bindingDictionary._dictionary);
-
 		kernel._bindingDictionary._dictionary.forEach((keyValuePair: interfaces.KeyValuePair<interfaces.Binding<any>>) => {
 
 			keyValuePair.value.forEach((binding) => {
 
 				if (binding.cache) {
-					console.log('cache: ' + binding.cache.constructor.name);
 					return this.proxyListener.apply(binding.cache);
 				}
 

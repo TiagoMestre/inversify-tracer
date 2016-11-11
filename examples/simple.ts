@@ -52,7 +52,6 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
 
 tracer.apply(kernel);
 
-kernel.get<Katana>('Weapon');
 const warrior = kernel.get<Warrior>('Warrior');
 
 warrior.attack();
