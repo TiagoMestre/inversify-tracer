@@ -63,7 +63,9 @@ export class ProxyListener {
 
 			object[methodName] = function() {
 
-				const args = Array.from(arguments);
+				const args = Array.from(arguments).map((argument: any) => {
+					return typeof(argument) === 'function' ? '<Function>' : argument;
+				});
 
 				self.emitter.emit('call', {
 					className: object.constructor.name,

@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@types/chai": "3.4.34",
-    "@types/inversify": "2.0.31",
     "@types/minimatch": "2.0.29",
     "@types/mocha": "2.2.32",
     "@types/node": "6.0.46",

@@ -1,6 +1,7 @@
 
 import { expect } from 'chai';
 import { InversifyTracer } from './../src/tracer';
+import { TracerOptions } from './../src/interfaces';
 import { InvalidTracerEventError } from './../src/errors';
 
 describe('InversifyTracer', () => {
@@ -14,9 +15,5 @@ describe('InversifyTracer', () => {
 				expect(() => { tracer.on('InvalidTracerEventError', null); }).to.throws(InvalidTracerEventError);
 			});
 		});
-	});
-
-	describe('apply', () => {
-
 	});
 });
