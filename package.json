@@ -31,9 +31,6 @@
     "url": "https://github.com/TiagoMestre/inversify-tracer/issues"
   },
   "homepage": "https://github.com/TiagoMestre/inversify-tracer#readme",
-  "peerDependencies": {
-    "inversify": ">=2.0.0"
-  },
   "devDependencies": {
     "@types/chai": "3.4.34",
     "@types/minimatch": "2.0.29",
