@@ -1,6 +1,6 @@
 
 import { EventEmitter } from 'events';
-import { interfaces, Kernel } from 'inversify';
+import { interfaces } from 'inversify';
 import * as minimatch from 'minimatch';
 
 import { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
@@ -21,6 +21,8 @@ function merge (base: any, newObj: any) {
 
 	return base;
 }
+
+export declare type BindingCallback = (binding: interfaces.Binding<any>) => void;
 
 export class InversifyTracer {
 
@@ -61,24 +63,42 @@ export class InversifyTracer {
 		return this;
 	}
 
-	public apply(kernel: any): void {
+	public apply(kernelOrContainer: any): void {
 
-		kernel._bindingDictionary._dictionary.forEach((keyValuePair: interfaces.KeyValuePair<interfaces.Binding<any>>) => {
+		if (kernelOrContainer._bindingDictionary._map) {
+			return this.applyToContainer(kernelOrContainer);
+		}
 
-			keyValuePair.value.forEach((binding) => {
+		this.applyToKernel(kernelOrContainer);
+	}
 
-				if (binding.cache) {
-					return this.proxyListener.apply(binding.cache);
-				}
+	private applyToBinding(binding: interfaces.Binding<any>): void {
+		if (binding.cache) {
+			return this.proxyListener.apply(binding.cache);
+		}
 
-				binding.onActivation = (context: any, target: any) => {
+		binding.onActivation = (context: any, target: any) => {
 
-					if (this.classFilter.match(target.constructor.name)) {
-						this.proxyListener.apply(target);
-					}
+			if (this.classFilter.match(target.constructor.name)) {
+				this.proxyListener.apply(target);
+			}
 
-					return target;
-				};
+			return target;
+		};
+	}
+
+	private applyToKernel(kernel: any): void {
+		kernel._bindingDictionary._dictionary.forEach((keyValuePair: any) => {
+			keyValuePair.value.forEach((binding: interfaces.Binding<any>) => {
+				this.applyToBinding(binding);
+			});
+		});
+	}
+
+	private applyToContainer(container: any): void {
+		container._bindingDictionary._map.forEach((bindings: interfaces.Binding<any>[]) => {
+			bindings.forEach((binding: interfaces.Binding<any>) => {
+				this.applyToBinding(binding);
 			});
 		});
 	}

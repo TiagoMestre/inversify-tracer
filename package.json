@@ -1,7 +1,7 @@
 {
   "name": "inversify-tracer",
-  "version": "1.0.6",
-  "description": "tool that allows the developer to trace methods of objects created by InversifyJS",
+  "version": "1.0.7",
+  "description": "Tool that allows the developer to trace methods of objects created by InversifyJS",
   "main": "lib/src/index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -31,12 +31,8 @@
     "url": "https://github.com/TiagoMestre/inversify-tracer/issues"
   },
   "homepage": "https://github.com/TiagoMestre/inversify-tracer#readme",
-  "peerDependencies": {
-    "inversify": ">=2.0.0"
-  },
   "devDependencies": {
     "@types/chai": "3.4.34",
-    "@types/inversify": "2.0.31",
     "@types/minimatch": "2.0.29",
     "@types/mocha": "2.2.32",
     "@types/node": "6.0.46",

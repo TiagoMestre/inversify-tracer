@@ -63,7 +63,9 @@ export class ProxyListener {
 
 			object[methodName] = function() {
 
-				const args = Array.from(arguments);
+				const args = Array.from(arguments).map((argument: any) => {
+					return typeof(argument) === 'function' ? '<Function>' : argument;
+				});
 
 				self.emitter.emit('call', {
 					className: object.constructor.name,
@@ -80,7 +82,7 @@ export class ProxyListener {
 						self.emitter.emit('return', { className: object.constructor.name, methodName, result: value });
 						return Promise.resolve(value);
 					}).catch((error: any) => {
-						self.emitter.emit('return', { className: object.constructor.name, methodName, error });
+						self.emitter.emit('return', { className: object.constructor.name, methodName, result: error });
 						return Promise.reject(error);
 					});
 
