@@ -1,5 +1,6 @@
 # inversify-tracer
 
+[![npm version](https://badge.fury.io/js/inversify-tracer.svg)](https://badge.fury.io/js/inversify-tracer)
 [![Build Status](https://travis-ci.org/TiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/TiagoMestre/inversify-tracer)
 [![Coverage Status](https://coveralls.io/repos/github/TiagoMestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/TiagoMestre/inversify-tracer?branch=dev)
 
@@ -12,57 +13,6 @@ You can get the latest release and the type definitions using npm:
 ```
 $ npm install inversify-tracer --save
 ```
-
-## Configuration
-
-| Property              | Type      | Default       | Description                                                   |
-|---                    |---        |---            |---                                                            |
-| filters               | string[]  | \['\*:\*'\]   | Filters that choose which classes and method will be traced   | 
-| inspectReturnedPromise| boolean   | true          | Inpect the value from the returned Promise object             |
-
-
-### Filters
-
-Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced.
-
-**Filter examples**:
-
-```ts
-['*:*', '!Ninja:*'] // trace every class, expect Ninja
-['Ninja:*', '!Ninja:hide'] // trace every method of the class Ninja, expect the 'hide' method
-['*:attack'] // trace attack method from every class
-['Nin*:*'] // trace every method of the classes that start with 'Nin'
-```
-
-## Events
-### Event: 'call'
-
-+ callInfo \<CallInfo\>
-
-Emitted each time a class method is called.
-
-### CallInfo
-
-| Property      | Type      | Description                                       |
-|---            |---        |---                                                |
-| className     | string    | Name of the class                                 | 
-| methodName    | string    | Name of the method                                |
-| parameters    | string[]  | Array with the name of the method's parameters    |
-| arguments     | any[]     | Array of values passed to the method              |
-
-### Event: 'return'
-
-+ returnInfo \<ReturnInfo\>
-
-Emitted each time a class method ends.
-
-### ReturnInfo
-
-| Property      | Type      | Description                   |
-|---            |---        |---                            |
-| className     | string    | Name of the class             | 
-| methodName    | string    | Name of the method            |
-| result        | any       | Returned value of the method  |
 
 ## Example
 ```ts
@@ -130,7 +80,58 @@ warrior.attack();
 
 ```
 Ninja attack called
-Katana use called force: 2
+Katana use called force:2
 Katana use returned 400
 Ninja attack returned 400
 ```
+
+## Configuration
+
+| Property              | Type      | Default       | Description                                                   |
+|---                    |---        |---            |---                                                            |
+| filters               | string[]  | \['\*:\*'\]   | Filters that choose which classes and method will be traced   | 
+| inspectReturnedPromise| boolean   | true          | Inpect the value from the returned Promise object             |
+
+
+### Filters
+
+Filters allow you to specify the classes and/or functions you want to trace. By default, all classes and methods will be traced.
+
+**Filter examples**:
+
+```ts
+['*:*', '!Ninja:*'] // trace every class, expect Ninja
+['Ninja:*', '!Ninja:hide'] // trace every method of the class Ninja, expect the 'hide' method
+['*:attack'] // trace attack method from every class
+['Nin*:*'] // trace every method of the classes that start with 'Nin'
+```
+
+## Events
+### Event: 'call'
+
++ callInfo \<CallInfo\>
+
+Emitted each time a class method is called.
+
+### CallInfo
+
+| Property      | Type      | Description                                       |
+|---            |---        |---                                                |
+| className     | string    | Name of the class                                 | 
+| methodName    | string    | Name of the method                                |
+| parameters    | string[]  | Array with the name of the method's parameters    |
+| arguments     | any[]     | Array of values passed to the method              |
+
+### Event: 'return'
+
++ returnInfo \<ReturnInfo\>
+
+Emitted each time a class method ends.
+
+### ReturnInfo
+
+| Property      | Type      | Description                   |
+|---            |---        |---                            |
+| className     | string    | Name of the class             | 
+| methodName    | string    | Name of the method            |
+| result        | any       | Returned value of the method  |
