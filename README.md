@@ -87,6 +87,17 @@ Ninja attack returned 400
 
 ## Configuration
 
+The configuration allows you to change the default behavior of the tracer. This configuration is passed through the InversifyTracer constructor. Example:
+
+```ts
+const tracer = new InversifyTracer({
+    filters: ["*:*", "!Ninja:*"],
+    inspectReturnedPromise: false
+});
+
+tracer.apply(kernel);
+```
+
 | Property              | Type      | Default       | Description                                                   |
 |---                    |---        |---            |---                                                            |
 | filters               | string[]  | \['\*:\*'\]   | Filters that choose which classes and method will be traced   | 
