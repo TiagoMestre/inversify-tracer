@@ -31,6 +31,10 @@ export class ProxyListener {
 
 	public apply(object: any) {
 
+		if (!(object instanceof Object) || object instanceof Array ) {
+			return;
+		}
+
 		const self = this;
 		let properties: Set<string> = new Set<string>();
 		let obj = object;

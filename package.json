@@ -1,6 +1,6 @@
 {
   "name": "inversify-tracer",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Tool that allows the developer to trace methods of objects created by InversifyJS",
   "main": "lib/src/index.js",
   "types": "index.d.ts",
@@ -52,7 +52,7 @@
     "require-directory": "2.1.1",
     "sinon": "1.17.5",
     "tslint": "3.15.1",
-    "typescript": "2.0.6"
+    "typescript": "2.1.4"
   },
   "dependencies": {
     "minimatch": "3.0.3"
