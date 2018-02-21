@@ -1,105 +1,104 @@
 
 import { EventEmitter } from 'events';
 import { interfaces } from 'inversify';
-import * as minimatch from 'minimatch';
 
-import { TracerOptions, CallInfo, ReturnInfo } from './interfaces';
+import { TracerOptions } from './interfaces';
 import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
-import { InvalidTracerEventError } from './errors';
+import { InvalidTracerEventError } from './invalid-tracer-event-error';
 import { ProxyListener } from './proxy';
 
 const defaultOptions: TracerOptions = {
     filters: ['*:*'],
-	inspectReturnedPromise: true
+    inspectReturnedPromise: true
 };
 
-function merge (base: any, newObj: any) {
+function merge(base: any, newObj: any) {
 
-	for (let prop in newObj) {
-		base[prop] = base[prop] || newObj[prop];
-	}
+    for (const prop in newObj) {
+        base[prop] = base[prop] || newObj[prop];
+    }
 
-	return base;
+    return base;
 }
 
 export declare type BindingCallback = (binding: interfaces.Binding<any>) => void;
 
 export class InversifyTracer {
 
-	private emitter: EventEmitter = new EventEmitter();
+    private emitter: EventEmitter = new EventEmitter();
 
-	private classFilter: ClassFilter;
+    private classFilter: ClassFilter;
 
-	private proxyListener: ProxyListener;
+    private proxyListener: ProxyListener;
 
-	constructor(options?: TracerOptions) {
+    public constructor(options?: TracerOptions) {
 
-		if (options) {
-			options = merge(options, defaultOptions);
-		} else {
-			options = defaultOptions;
-		}
+        if (options) {
+            options = merge(options, defaultOptions);
+        } else {
+            options = defaultOptions;
+        }
 
-		options.filters = normalizeFilters(options.filters);
+        options.filters = normalizeFilters(options.filters);
 
-		this.classFilter = new ClassFilter(options.filters);
+        this.classFilter = new ClassFilter(options.filters);
 
-		this.proxyListener = new ProxyListener(
-			this.emitter,
-			new MethodFilter(options.filters),
-			{
-				inspectReturnedPromise: options.inspectReturnedPromise
-			}
-		);
-	}
+        this.proxyListener = new ProxyListener(
+            this.emitter,
+            new MethodFilter(options.filters),
+            {
+                inspectReturnedPromise: options.inspectReturnedPromise
+            }
+        );
+    }
 
-	public on(eventName: string, callback: any) {
+    public on(eventName: string, callback: any) {
 
-		if (eventName !== 'call' && eventName !== 'return') {
-			throw new InvalidTracerEventError(eventName);
-		}
+        if (eventName !== 'call' && eventName !== 'return') {
+            throw new InvalidTracerEventError(eventName);
+        }
 
-		this.emitter.on(eventName, callback);
-		return this;
-	}
+        this.emitter.on(eventName, callback);
+        return this;
+    }
 
-	public apply(kernelOrContainer: any): void {
+    public apply(kernelOrContainer: any): void {
 
-		if (kernelOrContainer._bindingDictionary._map) {
-			return this.applyToContainer(kernelOrContainer);
-		}
+        if (kernelOrContainer._bindingDictionary._map) {
+            return this.applyToContainer(kernelOrContainer);
+        }
 
-		this.applyToKernel(kernelOrContainer);
-	}
+        this.applyToKernel(kernelOrContainer);
+    }
 
-	private applyToBinding(binding: interfaces.Binding<any>): void {
-		if (binding.cache) {
-			return this.proxyListener.apply(binding.cache);
-		}
+    private applyToBinding(binding: interfaces.Binding<any>): void {
+        if (binding.cache) {
+            return this.proxyListener.apply(binding.cache);
+        }
 
-		binding.onActivation = (context: any, target: any) => {
+        binding.onActivation = (context: any, target: any) => {
 
-			if (this.classFilter.match(target.constructor.name)) {
-				this.proxyListener.apply(target);
-			}
+            if (this.classFilter.match(target.constructor.name)) {
+                this.proxyListener.apply(target);
+            }
 
-			return target;
-		};
-	}
+            return target;
+        };
+    }
 
-	private applyToKernel(kernel: any): void {
-		kernel._bindingDictionary._dictionary.forEach((keyValuePair: any) => {
-			keyValuePair.value.forEach((binding: interfaces.Binding<any>) => {
-				this.applyToBinding(binding);
-			});
-		});
-	}
+    private applyToKernel(kernel: any): void {
+        kernel._bindingDictionary._dictionary.forEach((keyValuePair: any) => {
+            keyValuePair.value.forEach((binding: interfaces.Binding<any>) => {
+                this.applyToBinding(binding);
+            });
+        });
+    }
 
-	private applyToContainer(container: any): void {
-		container._bindingDictionary._map.forEach((bindings: interfaces.Binding<any>[]) => {
-			bindings.forEach((binding: interfaces.Binding<any>) => {
-				this.applyToBinding(binding);
-			});
-		});
-	}
+    private applyToContainer(container: any): void {
+        container._bindingDictionary._map.forEach((bindings: interfaces.Binding<any>[]) => {
+            bindings.forEach((binding: interfaces.Binding<any>) => {
+                this.applyToBinding(binding);
+            });
+        });
+    }
 }

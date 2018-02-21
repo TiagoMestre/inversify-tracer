@@ -1,19 +1,19 @@
 
 interface BaseInfo {
-	className: string;
-	methodName: string;
+    className: string;
+    methodName: string;
 }
 
 export interface CallInfo extends BaseInfo {
-	arguments: any[];
-	parameters: string[];
+    arguments: any[];
+    parameters: string[];
 }
 
 export interface ReturnInfo extends BaseInfo {
-	result: any;
+    result: any;
 }
 
 export interface TracerOptions {
-	filters?: string[];
-	inspectReturnedPromise?: boolean;
+    filters?: string[];
+    inspectReturnedPromise?: boolean;
 }

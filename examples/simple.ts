@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { injectable, inject, Kernel } from 'inversify';
+import { decorate, injectable, inject, Container } from 'inversify';
 import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
 interface Warrior {
@@ -10,7 +10,6 @@ interface Weapon {
     use(force: number): number;
 }
 
-@injectable()
 class Katana implements Weapon {
 
     public damage: number = 200;
@@ -20,12 +19,12 @@ class Katana implements Weapon {
     }
 }
 
-@injectable()
+// tslint:disable-next-line:max-classes-per-file
 class Ninja implements Warrior {
 
     private weapon: Weapon;
 
-    constructor(@inject('Weapon') weapon: Weapon) {
+    public constructor(weapon: Weapon) {
         this.weapon = weapon;
     }
 
@@ -34,10 +33,15 @@ class Ninja implements Warrior {
     }
 }
 
-const kernel = new Kernel();
+decorate(injectable(), Katana);
 
-kernel.bind<Weapon>('Weapon').toConstantValue(new Katana());
-kernel.bind<Warrior>('Warrior').to(Ninja);
+decorate(injectable(), Ninja);
+decorate(inject('Weapon'), Katana, 0);
+
+const container = new Container();
+
+container.bind<Weapon>('Weapon').toConstantValue(new Katana());
+container.bind<Warrior>('Warrior').to(Ninja);
 
 const tracer = new InversifyTracer();
 
@@ -50,9 +54,8 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
     console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
 
-tracer.apply(kernel);
+tracer.apply(container);
 
-const warrior = kernel.get<Warrior>('Warrior');
+const warrior = container.get<Warrior>('Warrior');
 
 warrior.attack();
-

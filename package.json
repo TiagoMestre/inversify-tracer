@@ -2,17 +2,10 @@
   "name": "inversify-tracer",
   "version": "1.0.8",
   "description": "Tool that allows the developer to trace methods of objects created by InversifyJS",
-  "main": "lib/src/index.js",
-  "types": "index.d.ts",
-  "scripts": {
-    "setup": "npm install",
-    "build": "gulp lint && tsc",
-    "test": "gulp test",
-    "coveralls": "cat ./coverage/lcov.info | coveralls"
-  },
+  "main": "build/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TiagoMestre/inversify-tracer.git"
+    "url": "git+https://github.com/tiagomestre/inversify-tracer.git"
   },
   "keywords": [
     "inversify",
@@ -23,38 +16,43 @@
   "contributors": [
     {
       "name": "Tiago Fernandes",
-      "url": "https://github.com/TiagoMestre"
+      "url": "https://github.com/tiagomestre"
     }
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TiagoMestre/inversify-tracer/issues"
-  },
-  "homepage": "https://github.com/TiagoMestre/inversify-tracer#readme",
-  "devDependencies": {
-    "@types/chai": "3.4.34",
-    "@types/minimatch": "2.0.29",
-    "@types/mocha": "2.2.32",
-    "@types/node": "6.0.46",
-    "@types/sinon": "1.16.31",
-    "chai": "3.5.0",
-    "coveralls": "2.11.12",
-    "del": "2.2.1",
-    "gulp": "3.9.1",
-    "gulp-istanbul": "1.0.0",
-    "gulp-mocha": "3.0.0",
-    "gulp-shell": "0.5.2",
-    "gulp-tslint": "6.0.2",
-    "inversify": "2.0.0",
-    "mochawesome": "1.5.3",
-    "reflect-metadata": "0.1.8",
-    "remap-istanbul": "0.6.4",
-    "require-directory": "2.1.1",
-    "sinon": "1.17.5",
-    "tslint": "3.15.1",
-    "typescript": "2.1.4"
+    "url": "https://github.com/tiagomestre/inversify-tracer/issues"
   },
   "dependencies": {
-    "minimatch": "3.0.3"
+    "minimatch": "3.0.4"
+  },
+  "devDependencies": {
+    "@types/chai": "4.1.2",
+    "@types/minimatch": "3.0.3",
+    "@types/mocha": "2.2.48",
+    "@types/node": "9.4.6",
+    "@types/sinon": "4.1.3",
+    "chai": "4.1.2",
+    "concurrently": "3.5.1",
+    "coveralls": "3.0.0",
+    "inversify": "4.10.0",
+    "mocha": "5.0.1",
+    "nyc": "11.4.1",
+    "rimraf": "2.6.2",
+    "sinon": "4.3.0",
+    "source-map-support": "0.5.3",
+    "tslint": "5.9.1",
+    "typescript": "2.7.2"
+  },
+  "scripts": {
+    "build": "concurrently \"npm run lint\"  \"npm run clean\" && tsc -p tsconfig.json",
+    "build:prod": "npm install && tsc -p tsconfig.prod.json && npm prune --production",
+    "test": "mocha test/init.js test/**/*.test.js",
+    "coverage": "rimraf coverage && nyc npm test",
+    "clean-external": "rimraf node_modules",
+    "clean": "rimraf src/**/*.d.ts src/**/*.js src/**/*.js.map test/**/*.d.ts test/**/*.js test/**/*.js.map",
+    "reset": "npm run clean && npm run clean-external && npm install && npm run build",
+    "lint": "tslint src/**/*.ts test/**/*.ts",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   }
 }

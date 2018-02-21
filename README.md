@@ -1,12 +1,12 @@
 # inversify-tracer
 
 [![npm version](https://badge.fury.io/js/inversify-tracer.svg)](https://badge.fury.io/js/inversify-tracer)
-[![Build Status](https://travis-ci.org/TiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/TiagoMestre/inversify-tracer)
-[![Coverage Status](https://coveralls.io/repos/github/TiagoMestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/TiagoMestre/inversify-tracer?branch=dev)
+[![Build Status](https://travis-ci.org/tiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/tiagoMestre/inversify-tracer)
+[![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=dev)
 
 Tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
 
-## Instalation
+## Installation
 
 You can get the latest release and the type definitions using npm:
 
@@ -100,7 +100,7 @@ tracer.apply(kernel);
 
 | Property              | Type      | Default       | Description                                                   |
 |---                    |---        |---            |---                                                            |
-| filters               | string[]  | \['\*:\*'\]   | Filters that choose which classes and method will be traced   | 
+| filters               | string[]  | \['\*:\*'\]   | Filters that choose which classes and method will be traced   |
 | inspectReturnedPromise| boolean   | true          | Inpect the value from the returned Promise object             |
 
 
@@ -128,7 +128,7 @@ Emitted each time a class method is called.
 
 | Property      | Type      | Description                                       |
 |---            |---        |---                                                |
-| className     | string    | Name of the class                                 | 
+| className     | string    | Name of the class                                 |
 | methodName    | string    | Name of the method                                |
 | parameters    | string[]  | Array with the name of the method's parameters    |
 | arguments     | any[]     | Array of values passed to the method              |
@@ -143,6 +143,6 @@ Emitted each time a class method ends.
 
 | Property      | Type      | Description                   |
 |---            |---        |---                            |
-| className     | string    | Name of the class             | 
+| className     | string    | Name of the class             |
 | methodName    | string    | Name of the method            |
 | result        | any       | Returned value of the method  |

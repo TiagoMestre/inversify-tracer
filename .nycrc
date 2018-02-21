@@ -1,0 +1,6 @@
+{
+	"include": ["src/**/*.js"],
+	"sourceMap": true,
+	"reporter": ["text-summary", "html"],
+	"all": true
+}

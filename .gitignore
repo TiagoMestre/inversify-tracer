@@ -1,13 +1,21 @@
 
+coverage
+reports
+build
 
-npm-debug.log*
+src/**/*.d.ts
+src/**/*.js.map
+src/**/*.js
+
+test/**/*.d.ts
+test/**/*.js.map
+test/**/*.js
+
+.nyc_output
 
 node_modules
 
-reports
-coverage
-
-.vscode
-*.js.map
-lib
-
+# Logs
+logs
+*.log
+npm-debug.log*

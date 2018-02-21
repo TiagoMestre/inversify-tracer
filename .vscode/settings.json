@@ -1,0 +1,28 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+	"typescript.tsdk": "node_modules/typescript/lib",
+    //-------- Files configuration --------
+	"editor.trimAutoWhitespace": true,
+	"editor.detectIndentation": false,
+	"editor.tabSize": 4,
+	"editor.insertSpaces": true,
+	// Configure glob patterns for excluding files and folders.
+	"files.exclude": {
+		"**/.git": true,
+		"**/.DS_Store": true,
+		"**/.nyc_output": true,
+        "src/**/*.js": true,
+        "src/**/*.js.map": true,
+        "test/**/*.js": true,
+		"test/**/*.js.map": true,
+		"**/*.d.ts": true,
+        "node_modules": true,
+		"build": true
+	},
+	"docthis.automaticForBlockComments": true,
+	"vsicons.presets.angular": false,
+	"files.trimTrailingWhitespace": true,
+	"vsicons.associations.files": [
+		 { "icon": "tsconfig", "extensions": ["tsconfig.prod.json"], "filename": true, "format": "json" }
+	]
+}
