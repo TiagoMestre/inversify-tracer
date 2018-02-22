@@ -47,8 +47,8 @@
   "scripts": {
     "build": "concurrently \"npm run lint\"  \"npm run clean\" && tsc -p tsconfig.json",
     "build:prod": "npm install && tsc -p tsconfig.prod.json && npm prune --production",
-    "test": "mocha test/init.js test/**/*.test.js",
-    "coverage": "rimraf coverage && nyc npm test",
+    "test": "rimraf coverage && nyc npm run test:mocha",
+    "test:mocha": "mocha test/init.js test/**/*.test.js",
     "clean-external": "rimraf node_modules",
     "clean": "rimraf src/**/*.d.ts src/**/*.js src/**/*.js.map test/**/*.d.ts test/**/*.js test/**/*.js.map",
     "reset": "npm run clean && npm run clean-external && npm install && npm run build",
