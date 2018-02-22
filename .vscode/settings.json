@@ -15,7 +15,8 @@
         "src/**/*.js.map": true,
         "test/**/*.js": true,
 		"test/**/*.js.map": true,
-		"**/*.d.ts": true,
+        "**/*.d.ts": true,
+        "coverage": true,
         "node_modules": true,
 		"build": true
 	},

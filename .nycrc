@@ -1,6 +1,6 @@
 {
 	"include": ["src/**/*.js"],
 	"sourceMap": true,
-	"reporter": ["text-summary", "html"],
+	"reporter": ["text-summary", "lcov"],
 	"all": true
 }
