@@ -1,8 +1,8 @@
 # inversify-tracer
 
 [![npm version](https://badge.fury.io/js/inversify-tracer.svg)](https://badge.fury.io/js/inversify-tracer)
-[![Build Status](https://travis-ci.org/tiagoMestre/inversify-tracer.svg?branch=dev)](https://travis-ci.org/tiagoMestre/inversify-tracer)
-[![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg?branch=dev)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=dev)
+[![Build Status](https://travis-ci.org/tiagomestre/inversify-tracer.svg?branch=master)](https://travis-ci.org/tiagomestre/inversify-tracer)
+[![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg?branch=master)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=master)
 
 Tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
 

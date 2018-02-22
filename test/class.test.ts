@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { ClassFilter } from './../../src/filters';
+import { ClassFilter } from './../src/class-filter';
 
 describe('ClassFilter', () => {
 

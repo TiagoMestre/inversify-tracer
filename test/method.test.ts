@@ -1,6 +1,6 @@
 
 import { expect } from 'chai';
-import { MethodFilter } from './../../src/filters';
+import { MethodFilter } from './../src/method-filter';
 
 describe('MethodFilter', () => {
 

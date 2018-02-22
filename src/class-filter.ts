@@ -1,5 +1,5 @@
 
-import { BaseFilter } from './base';
+import { BaseFilter } from './base-filter';
 import { includeRegex } from './constants';
 
 const classIncludeRegex: RegExp = /^([A-Z|a-z|0-9|\_|\$|\*]+):.+$/;

@@ -1,6 +1,6 @@
 
 import { EventEmitter } from 'events';
-import { MethodFilter } from './filters';
+import { MethodFilter } from './method-filter';
 
 const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
@@ -65,7 +65,8 @@ export class ProxyListener {
             const parameters = getParamNames(object[methodName]);
             const method = object[methodName];
 
-            object[methodName] = () => {
+            // tslint:disable-next-line:only-arrow-functions
+            object[methodName] = function() {
 
                 const args = Array.from(arguments).map((argument: any) => {
                     return typeof (argument) === 'function' ? '<Function>' : argument;

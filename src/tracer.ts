@@ -2,26 +2,36 @@
 import { EventEmitter } from 'events';
 import { interfaces } from 'inversify';
 
-import { TracerOptions } from './interfaces';
-import { normalizeFilters, ClassFilter, MethodFilter } from './filters';
+import { ClassFilter } from './class-filter';
+import { MethodFilter } from './method-filter';
+import { InvalidFilterError } from './invalid-filter-error';
 import { InvalidTracerEventError } from './invalid-tracer-event-error';
 import { ProxyListener } from './proxy';
+
+const filterRegex: RegExp = /^(!?[A-Z|a-z|0-9|\_|\$|\*]+):?([A-Z|a-z|0-9|\_|\$|\*]+)?$/;
 
 const defaultOptions: TracerOptions = {
     filters: ['*:*'],
     inspectReturnedPromise: true
 };
 
-function merge(base: any, newObj: any) {
-
-    for (const prop in newObj) {
-        base[prop] = base[prop] || newObj[prop];
-    }
-
-    return base;
+export interface CallInfo {
+    className: string;
+    methodName: string;
+    arguments: any[];
+    parameters: string[];
 }
 
-export declare type BindingCallback = (binding: interfaces.Binding<any>) => void;
+export interface ReturnInfo {
+    className: string;
+    methodName: string;
+    result: any;
+}
+
+export interface TracerOptions {
+    filters?: string[];
+    inspectReturnedPromise?: boolean;
+}
 
 export class InversifyTracer {
 
@@ -33,13 +43,9 @@ export class InversifyTracer {
 
     public constructor(options?: TracerOptions) {
 
-        if (options) {
-            options = merge(options, defaultOptions);
-        } else {
-            options = defaultOptions;
-        }
+        options = options ? { ...defaultOptions, ...options } : defaultOptions;
 
-        options.filters = normalizeFilters(options.filters);
+        options.filters = this.normalizeFilters(options.filters);
 
         this.classFilter = new ClassFilter(options.filters);
 
@@ -99,6 +105,20 @@ export class InversifyTracer {
             bindings.forEach((binding: interfaces.Binding<any>) => {
                 this.applyToBinding(binding);
             });
+        });
+    }
+
+    private normalizeFilters(filters: string[]): string[] {
+
+        return filters.map((filter: string) => {
+
+            const values = filter.match(filterRegex);
+
+            if (!values) {
+                throw new InvalidFilterError(filter);
+            }
+
+            return `${values[1]}:${values[2] || '*'}`;
         });
     }
 }

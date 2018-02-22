@@ -2,6 +2,7 @@
 export class InvalidFilterError extends Error {
 
     public constructor(filter: string) {
-        super(`Invalid filter (${filter})`);
+        super(`invalid filter \"${filter}\"`);
+        this.name = this.constructor.name;
     }
 }

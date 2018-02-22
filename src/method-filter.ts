@@ -1,5 +1,5 @@
 
-import { BaseFilter } from './base';
+import { BaseFilter } from './base-filter';
 import { includeRegex, excludeRegex } from './constants';
 
 export class MethodFilter extends BaseFilter {

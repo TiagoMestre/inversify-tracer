@@ -2,6 +2,7 @@
 export class InvalidTracerEventError extends Error {
 
     public constructor(event: string) {
-        super(`Invalid event (${event}), allowed only (call and return)`);
+        super(`invalid event \"${event}\", only allowed (call and return)`);
+        this.name = this.constructor.name;
     }
 }
