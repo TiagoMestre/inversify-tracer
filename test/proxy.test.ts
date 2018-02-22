@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { ReturnInfo } from './../src/tracer';
-import { ProxyListener } from './../src/proxy';
+import { ProxyListener } from './../src/proxy-listener';
 import { MethodFilter } from './../src/method-filter';
 
 class TestObject {

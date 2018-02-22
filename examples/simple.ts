@@ -2,46 +2,18 @@ import 'reflect-metadata';
 import { decorate, injectable, inject, Container } from 'inversify';
 import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
-interface Warrior {
-    attack(): number;
-}
+class Ninja  {
 
-interface Weapon {
-    use(force: number): number;
-}
-
-class Katana implements Weapon {
-
-    public damage: number = 200;
-
-    public use(force: number): number {
-        return force * this.damage;
+    public attack(force: number) {
+        return 32 * force;
     }
 }
-
-// tslint:disable-next-line:max-classes-per-file
-class Ninja implements Warrior {
-
-    private weapon: Weapon;
-
-    public constructor(weapon: Weapon) {
-        this.weapon = weapon;
-    }
-
-    public attack() {
-        return this.weapon.use(2);
-    }
-}
-
-decorate(injectable(), Katana);
 
 decorate(injectable(), Ninja);
-decorate(inject('Weapon'), Katana, 0);
 
 const container = new Container();
 
-container.bind<Weapon>('Weapon').toConstantValue(new Katana());
-container.bind<Warrior>('Warrior').to(Ninja);
+container.bind<Ninja>('Ninja').to(Ninja);
 
 const tracer = new InversifyTracer();
 
@@ -56,6 +28,6 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
 
 tracer.apply(container);
 
-const warrior = container.get<Warrior>('Warrior');
+const warrior = container.get<Ninja>('Ninja');
 
-warrior.attack();
+warrior.attack(2);

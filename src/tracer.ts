@@ -6,7 +6,7 @@ import { ClassFilter } from './class-filter';
 import { MethodFilter } from './method-filter';
 import { InvalidFilterError } from './invalid-filter-error';
 import { InvalidTracerEventError } from './invalid-tracer-event-error';
-import { ProxyListener } from './proxy';
+import { ProxyListener } from './proxy-listener';
 
 const filterRegex: RegExp = /^(!?[A-Z|a-z|0-9|\_|\$|\*]+):?([A-Z|a-z|0-9|\_|\$|\*]+)?$/;
 

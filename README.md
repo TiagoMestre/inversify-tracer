@@ -17,45 +17,21 @@ $ npm install inversify-tracer --save
 ## Example
 ```ts
 import 'reflect-metadata';
-import { injectable, inject, Kernel } from 'inversify';
-import { InversifyTracer, CallInfo, ReturnInfo } from 'inversify-tracer';
+import { decorate, injectable, inject, Container } from 'inversify';
+import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
-interface Warrior {
-    attack(): number;
-}
+class Ninja  {
 
-interface Weapon {
-    use(force: number): number;
-}
-
-@injectable()
-class Katana implements Weapon {
-
-    public damage: number = 200;
-
-    public use(force: number): number {
-        return force * this.damage;
+    public attack(force: number) {
+        return 32 * force;
     }
 }
 
-@injectable()
-class Ninja implements Warrior {
+decorate(injectable(), Ninja);
 
-    private weapon: Weapon;
+const container = new Container();
 
-    constructor(@inject('Weapon') weapon: Weapon) {
-        this.weapon = weapon;
-    }
-
-    public attack() {
-        return this.weapon.use(2);
-    }
-}
-
-const kernel = new Kernel();
-
-kernel.bind<Weapon>('Weapon').to(Katana);
-kernel.bind<Warrior>('Warrior').to(Ninja);
+container.bind<Ninja>('Ninja').to(Ninja);
 
 const tracer = new InversifyTracer();
 
@@ -64,25 +40,22 @@ tracer.on('call', (callInfo: CallInfo) => {
     console.log(`${callInfo.className} ${callInfo.methodName} called ${parametersWithValue}`);
 });
 
-
 tracer.on('return', (returnInfo: ReturnInfo) => {
     console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
 });
 
-tracer.apply(kernel);
+tracer.apply(container);
 
-const warrior = kernel.get<Warrior>('Warrior');
+const warrior = container.get<Ninja>('Ninja');
 
-warrior.attack();
+warrior.attack(2);
 ```
 
 **Result:**
 
 ```
-Ninja attack called
-Katana use called force:2
-Katana use returned 400
-Ninja attack returned 400
+Ninja attack called force:2
+Ninja attack returned 64
 ```
 
 ## Configuration

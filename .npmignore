@@ -2,20 +2,21 @@
 .git
 .vscode
 
-gulp
 src
 tests
 reports
 coverage
 examples
-lib
-!lib/src/**/*.js
+!src/**/*.js
 
 *.js.map
 
 .npmignore
 .gitignore
+.gitattributes
 .travis.yml
-gulpfile.js
 tsconfig.json
+tsconfig.prod.json
 tslint.json
+.nycrc
+.editorconfig
