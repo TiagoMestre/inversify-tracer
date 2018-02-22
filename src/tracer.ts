@@ -68,13 +68,12 @@ export class InversifyTracer {
         return this;
     }
 
-    public apply(kernelOrContainer: any): void {
-
-        if (kernelOrContainer._bindingDictionary._map) {
-            return this.applyToContainer(kernelOrContainer);
-        }
-
-        this.applyToKernel(kernelOrContainer);
+    public apply(container: any): void {
+        container._bindingDictionary._map.forEach((bindings: interfaces.Binding<any>[]) => {
+            bindings.forEach((binding: interfaces.Binding<any>) => {
+                this.applyToBinding(binding);
+            });
+        });
     }
 
     private applyToBinding(binding: interfaces.Binding<any>): void {
@@ -90,22 +89,6 @@ export class InversifyTracer {
 
             return target;
         };
-    }
-
-    private applyToKernel(kernel: any): void {
-        kernel._bindingDictionary._dictionary.forEach((keyValuePair: any) => {
-            keyValuePair.value.forEach((binding: interfaces.Binding<any>) => {
-                this.applyToBinding(binding);
-            });
-        });
-    }
-
-    private applyToContainer(container: any): void {
-        container._bindingDictionary._map.forEach((bindings: interfaces.Binding<any>[]) => {
-            bindings.forEach((binding: interfaces.Binding<any>) => {
-                this.applyToBinding(binding);
-            });
-        });
     }
 
     private normalizeFilters(filters: string[]): string[] {
