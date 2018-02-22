@@ -50,7 +50,7 @@ describe('ProxyListener', () => {
 
             after(() => eventEmitter.removeListener('return', spy));
         });
-        /*
+
         context('inspectReturnedPromise false', () => {
 
             const proxyListener = new ProxyListener(eventEmitter, methodFilter, { inspectReturnedPromise: false });
@@ -77,6 +77,5 @@ describe('ProxyListener', () => {
 
             after(() => eventEmitter.removeListener('return', spy));
         });
-        */
     });
 });
