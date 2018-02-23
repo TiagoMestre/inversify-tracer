@@ -15,19 +15,6 @@ const defaultOptions: TracerOptions = {
     inspectReturnedPromise: true
 };
 
-export interface CallInfo {
-    className: string;
-    methodName: string;
-    arguments: any[];
-    parameters: string[];
-}
-
-export interface ReturnInfo {
-    className: string;
-    methodName: string;
-    result: any;
-}
-
 export interface TracerOptions {
     filters?: string[];
     inspectReturnedPromise?: boolean;

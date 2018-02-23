@@ -36,8 +36,7 @@ container.bind<Ninja>('Ninja').to(Ninja);
 const tracer = new InversifyTracer();
 
 tracer.on('call', (callInfo: CallInfo) => {
-    const parametersWithValue = callInfo.parameters.map((param: any, i: number) => `${param}:${callInfo.arguments[i]}`);
-    console.log(`${callInfo.className} ${callInfo.methodName} called ${parametersWithValue}`);
+    console.log(`${callInfo.className} ${callInfo.methodName} called with ${JSON.stringify(callInfo.parameters)}`);
 });
 
 tracer.on('return', (returnInfo: ReturnInfo) => {
@@ -49,13 +48,6 @@ tracer.apply(container);
 const warrior = container.get<Ninja>('Ninja');
 
 warrior.attack(2);
-```
-
-**Result:**
-
-```
-Ninja attack called force:2
-Ninja attack returned 64
 ```
 
 ## Configuration

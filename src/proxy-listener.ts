@@ -7,9 +7,26 @@ const ARGUMENT_NAMES = /([^\s,]+)/g;
 
 const constructorName = 'constructor';
 
-function getParamNames(func: () => void) {
+function getParamNames(func: () => void): string[] {
     const fnStr = func.toString().replace(STRIP_COMMENTS, '');
     return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES) || [];
+}
+
+export interface Parameter {
+    name: string;
+    value: any;
+}
+
+export interface CallInfo {
+    className: string;
+    methodName: string;
+    parameters: Parameter[];
+}
+
+export interface ReturnInfo {
+    className: string;
+    methodName: string;
+    result: any;
 }
 
 export interface ProxyListenerOptions {
@@ -72,27 +89,35 @@ export class ProxyListener {
                     return typeof (argument) === 'function' ? '<Function>' : argument;
                 });
 
+                const callArguments = arguments.length > parameters.length ? args : args.concat(new Array(parameters.length - args.length));
+
+                const callParameters: Parameter[] = parameters.map((parameterName: string, index: number) => {
+                    return {
+                        name: parameterName,
+                        value: callArguments[index]
+                    } as Parameter;
+                });
+
                 self.emitter.emit('call', {
                     className: object.constructor.name,
                     methodName,
-                    arguments: arguments.length > parameters.length ? args : args.concat(new Array(parameters.length - args.length)),
-                    parameters
-                });
+                    parameters: callParameters
+                } as CallInfo);
 
                 const result = method.apply(object, arguments);
 
                 if (self.options.inspectReturnedPromise && result instanceof Promise) {
 
                     return result.then((value: any) => {
-                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: value });
+                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: value } as ReturnInfo);
                         return Promise.resolve(value);
                     }).catch((error: any) => {
-                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: error });
+                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: error } as ReturnInfo);
                         return Promise.reject(error);
                     });
 
                 } else {
-                    self.emitter.emit('return', { className: object.constructor.name, methodName, result });
+                    self.emitter.emit('return', { className: object.constructor.name, methodName, result } as ReturnInfo);
                     return result;
                 }
             };
