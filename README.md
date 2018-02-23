@@ -91,12 +91,11 @@ Emitted each time a class method is called.
 
 ### CallInfo
 
-| Property      | Type      | Description                                       |
-|---            |---        |---                                                |
-| className     | string    | Name of the class                                 |
-| methodName    | string    | Name of the method                                |
-| parameters    | string[]  | Array with the name of the method's parameters    |
-| arguments     | any[]     | Array of values passed to the method              |
+| Property      | Type         | Description                                       |
+|---            |---           |---                                                |
+| className     | string       | Name of the class                                 |
+| methodName    | string       | Name of the method                                |
+| parameters    | Parameter[]  | Array with the name of the method's parameters and their value |
 
 ### Event: 'return'
 
