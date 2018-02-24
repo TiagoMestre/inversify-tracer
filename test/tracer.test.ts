@@ -22,7 +22,7 @@ describe('InversifyTracer', () => {
             const tracer = new InversifyTracer();
 
             it('should throw InvalidFilterError', () => {
-                expect(() => { tracer.on('invalid-event', null); }).to.throws(InvalidTracerEventError);
+                expect(() => { tracer.on('invalid-event', () => { return; }); }).to.throw(InvalidTracerEventError);
             });
         });
     });

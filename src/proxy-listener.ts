@@ -5,7 +5,7 @@ import { MethodFilter } from './method-filter';
 const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/mg;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
 
-const constructorName = 'constructor';
+const CONSTRUCTOR_NAME = 'constructor';
 
 function getParamNames(func: () => void): string[] {
     const fnStr = func.toString().replace(STRIP_COMMENTS, '');
@@ -68,7 +68,7 @@ export class ProxyListener {
         let methods: string[] = [];
 
         properties.forEach((propertyName: string) => {
-            if (typeof (object[propertyName]) === 'function' && propertyName !== constructorName) {
+            if (typeof (object[propertyName]) === 'function' && propertyName !== CONSTRUCTOR_NAME) {
                 methods.push(propertyName);
             }
         });
@@ -85,18 +85,20 @@ export class ProxyListener {
             // tslint:disable-next-line:only-arrow-functions
             object[methodName] = function() {
 
-                const args = Array.from(arguments).map((argument: any) => {
-                    return typeof (argument) === 'function' ? '<Function>' : argument;
-                });
+                const args = Array.from(arguments);
 
-                const callArguments = arguments.length > parameters.length ? args : args.concat(new Array(parameters.length - args.length));
+                const tempArguments: any[] = args.length >= parameters.length ? args : args.concat(new Array(parameters.length - args.length));
+                const tempParameters: string[] =
+                    args.length > parameters.length ? parameters.concat(new Array(args.length - parameters.length)) : parameters;
 
-                const callParameters: Parameter[] = parameters.map((parameterName: string, index: number) => {
-                    return {
-                        name: parameterName,
-                        value: callArguments[index]
-                    } as Parameter;
-                });
+                const callParameters = [];
+
+                for (let i = 0; i < tempParameters.length; i++) {
+                    callParameters.push({
+                        name: tempParameters[i],
+                        value: tempArguments[i]
+                    } as Parameter);
+                }
 
                 self.emitter.emit('call', {
                     className: object.constructor.name,
