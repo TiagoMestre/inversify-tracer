@@ -3,13 +3,12 @@
 .vscode
 
 src
-tests
+test
 reports
 coverage
 examples
-!src/**/*.js
-
-*.js.map
+node_modules
+coverage
 
 .npmignore
 .gitignore
