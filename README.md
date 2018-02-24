@@ -19,7 +19,7 @@ $ npm install inversify-tracer --save
 ## Example
 ```ts
 import 'reflect-metadata';
-import { decorate, injectable, inject, Container } from 'inversify';
+import { decorate, injectable, Container } from 'inversify';
 import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
 class Ninja  {
