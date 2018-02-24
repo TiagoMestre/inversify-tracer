@@ -4,8 +4,10 @@
 [![Build Status](https://travis-ci.org/tiagomestre/inversify-tracer.svg?branch=upgrade-project)](https://travis-ci.org/tiagomestre/inversify-tracer)
 [![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg?branch=upgrade-project)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=upgrade-project)
 [![dependencies Status](https://david-dm.org/tiagomestre/inversify-tracer/status.svg)](https://david-dm.org/tiagomestre/inversify-tracer)
-Tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
 [![devDependencies Status](https://david-dm.org/tiagomestre/inversify-tracer/dev-status.svg)](https://david-dm.org/tiagomestre/inversify-tracer?type=dev)
+
+Tool that allows the developer to trace methods of objects created by [InversifyJS](https://github.com/inversify/InversifyJS).
+
 ## Installation
 
 You can get the latest release and the type definitions using npm:
