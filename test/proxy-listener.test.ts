@@ -5,13 +5,7 @@ import * as sinon from 'sinon';
 import { ProxyListener, CallInfo, ReturnInfo, Parameter } from './../src/proxy-listener';
 import { MethodFilter } from './../src/method-filter';
 
-class TestObject {
-    public method() { return; }
-    public methodWithValue(value: any) { return value; }
-    public methodPromiseResolve() { return Promise.resolve(); }
-    public methodPromiseResolveWithValue(value: any) { return Promise.resolve(value); }
-    public methodPromiseRejectWithValue(value: any) { return Promise.reject(value); }
-}
+import { TestObject } from './test-object';
 
 const methodFilter = new MethodFilter(['*:*']);
 

@@ -64,9 +64,6 @@ export class InversifyTracer {
     }
 
     private applyToBinding(binding: interfaces.Binding<any>): void {
-        if (binding.cache) {
-            return this.proxyListener.apply(binding.cache);
-        }
 
         binding.onActivation = (context: any, target: any) => {
 
