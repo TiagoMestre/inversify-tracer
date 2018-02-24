@@ -10,7 +10,7 @@
 		"allowUnreachableCode": false,
 		"alwaysStrict": true,
 		"allowUnusedLabels": false,
-		"declaration": true,
+        "declaration": true,
 		"noLib": false,
 		"newLine": "LF",
         "preserveConstEnums": true,

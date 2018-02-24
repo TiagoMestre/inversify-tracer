@@ -13,19 +13,75 @@ function getParamNames(func: () => void): string[] {
 }
 
 export interface Parameter {
+
+    /**
+     * Parameter name
+     *
+     * @type {string}
+     * @memberof Parameter
+     */
     name: string;
+
+    /**
+     * Parameter value
+     *
+     * @type {*}
+     * @memberof Parameter
+     */
     value: any;
 }
 
 export interface CallInfo {
+
+    /**
+     * Class name
+     *
+     * @type {string}
+     * @memberof CallInfo
+     */
     className: string;
+
+    /**
+     * Method name
+     *
+     * @type {string}
+     * @memberof CallInfo
+     */
     methodName: string;
+
+    /**
+     * Parameters passed to the method
+     *
+     * @type {Parameter[]}
+     * @memberof CallInfo
+     */
     parameters: Parameter[];
 }
 
 export interface ReturnInfo {
+
+    /**
+     * Class name
+     *
+     * @type {string}
+     * @memberof ReturnInfo
+     */
     className: string;
+
+    /**
+     * Method name
+     *
+     * @type {string}
+     * @memberof ReturnInfo
+     */
     methodName: string;
+
+    /**
+     * Returned value
+     *
+     * @type {*}
+     * @memberof ReturnInfo
+     */
     result: any;
 }
 
