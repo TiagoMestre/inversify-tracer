@@ -11,7 +11,7 @@ describe('InversifyTracer', () => {
         context('invalid filter', () => {
 
             it('should throw InvalidFilterError', () => {
-                expect(() => { new InversifyTracer({ filters: ['invalid!"#!filter'] }); }).to.throws(InvalidFilterError);
+                expect(() => { new InversifyTracer({ filters: ['invalid!"#!filter'] }); }).to.throw(InvalidFilterError);
             });
         });
     });
