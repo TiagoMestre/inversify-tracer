@@ -1,8 +1,8 @@
 # inversify-tracer
 
 [![npm version](https://badge.fury.io/js/inversify-tracer.svg)](https://badge.fury.io/js/inversify-tracer)
-[![Build Status](https://travis-ci.org/tiagomestre/inversify-tracer.svg?branch=upgrade-project)](https://travis-ci.org/tiagomestre/inversify-tracer)
-[![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg?branch=upgrade-project)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=upgrade-project)
+[![Build Status](https://travis-ci.org/tiagomestre/inversify-tracer.svg)](https://travis-ci.org/tiagomestre/inversify-tracer)
+[![Coverage Status](https://coveralls.io/repos/github/tiagomestre/inversify-tracer/badge.svg)](https://coveralls.io/github/tiagomestre/inversify-tracer?branch=upgrade-project)
 [![dependencies Status](https://david-dm.org/tiagomestre/inversify-tracer/status.svg)](https://david-dm.org/tiagomestre/inversify-tracer)
 [![devDependencies Status](https://david-dm.org/tiagomestre/inversify-tracer/dev-status.svg)](https://david-dm.org/tiagomestre/inversify-tracer?type=dev)
 
