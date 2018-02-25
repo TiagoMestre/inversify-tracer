@@ -1,5 +1,5 @@
 
-1.1.0 / XX-XX-2018
+1.1.0 / 25-02-2018
 ===================
 
 * Upgrade tooling and project structure
