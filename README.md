@@ -78,8 +78,8 @@ Filters allow you to specify the classes and/or functions you want to trace. By 
 **Filter examples**:
 
 ```ts
-['*:*', '!Ninja:*'] // trace every class, expect Ninja
-['Ninja:*', '!Ninja:hide'] // trace every method of the class Ninja, expect the 'hide' method
+['*:*', '!Ninja:*'] // trace every class, except Ninja
+['Ninja:*', '!Ninja:hide'] // trace every method of the class Ninja, except the 'hide' method
 ['*:attack'] // trace attack method from every class
 ['Nin*:*'] // trace every method of the classes that start with 'Nin'
 ```
