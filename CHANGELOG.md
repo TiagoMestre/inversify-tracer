@@ -1,4 +1,9 @@
 
+1.2.0 / dd-MM-2018
+===================
+
+* Fix bug "Tracer overrides the binding's onActivation function"
+
 1.1.1 / 25-02-2018
 ===================
 
