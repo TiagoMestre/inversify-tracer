@@ -214,4 +214,28 @@ describe('InversifyTracer', () => {
             expect(returnSpy.calledOnce).to.be.true;
         });
     });
+
+    context('container with a binding that has an onActivation function', () => {
+
+        let tracer: InversifyTracer;
+        let container: Container;
+
+        const onActivationSpy: sinon.SinonSpy = sinon.spy();
+
+        before(() => {
+            tracer = new InversifyTracer();
+            container = new Container();
+
+            container.bind<TestObject>('TestObject').to(TestObject).onActivation(onActivationSpy);
+
+            tracer.apply(container);
+        });
+
+        it('should not override the onActivation function and call it', () => {
+
+            container.get<TestObject>('TestObject');
+
+            expect(onActivationSpy.calledOnce).to.be.true;
+        });
+    });
 });
