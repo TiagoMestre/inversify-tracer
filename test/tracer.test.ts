@@ -220,7 +220,9 @@ describe('InversifyTracer', () => {
         let tracer: InversifyTracer;
         let container: Container;
 
-        const onActivationSpy: sinon.SinonSpy = sinon.spy();
+        const onActivationSpy: sinon.SinonSpy = sinon.spy((context: any, newObject: any) => {
+            return newObject;
+        });
 
         before(() => {
             tracer = new InversifyTracer();
@@ -236,6 +238,10 @@ describe('InversifyTracer', () => {
             container.get<TestObject>('TestObject');
 
             expect(onActivationSpy.calledOnce).to.be.true;
+
+            container.get<TestObject>('TestObject');
+
+            expect(onActivationSpy.calledTwice).to.be.true;
         });
     });
 });

@@ -65,7 +65,11 @@ export class InversifyTracer {
 
     private applyToBinding(binding: interfaces.Binding<any>): void {
 
-        binding.onActivation = (context: any, target: any) => {
+        const bindingOnActivation = binding.onActivation;
+
+        binding.onActivation = (context: interfaces.Context, target: any): any => {
+
+            if (bindingOnActivation) { target = bindingOnActivation(context, target); }
 
             if (this.classFilter.match(target.constructor.name)) {
                 this.proxyListener.apply(target);
