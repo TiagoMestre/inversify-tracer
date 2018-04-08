@@ -104,7 +104,7 @@ export class ProxyListener {
 
     public apply(object: any) {
 
-        if (!(object instanceof Object) || object instanceof Array) {
+        if (!(object instanceof Object)) {
             return;
         }
 
