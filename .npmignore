@@ -1,6 +1,5 @@
 
-.git
-.vscode
+.*
 
 src
 test
@@ -10,12 +9,6 @@ examples
 node_modules
 coverage
 
-.npmignore
-.gitignore
-.gitattributes
-.travis.yml
 tsconfig.json
 tsconfig.prod.json
 tslint.json
-.nycrc
-.editorconfig
