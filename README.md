@@ -47,9 +47,16 @@ tracer.on('return', (returnInfo: ReturnInfo) => {
 
 tracer.apply(container);
 
-const warrior = container.get<Ninja>('Ninja');
+const ninja = container.get<Ninja>('Ninja');
 
-warrior.attack(2);
+ninja.attack(2);
+```
+
+**Result:**
+
+```
+Ninja attack called with [{"name":"force","value":2}]
+Ninja attack returned 64
 ```
 
 ## Configuration
