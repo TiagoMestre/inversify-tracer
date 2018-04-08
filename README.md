@@ -13,7 +13,7 @@ Tool that allows the developer to trace methods of objects created by [Inversify
 You can get the latest release and the type definitions using npm:
 
 ```
-$ npm install inversify-tracer --save
+$ npm install --save inversify-tracer
 ```
 
 ## Example
