@@ -4,8 +4,18 @@ import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
 class Ninja  {
 
-    public attack(force: number) {
+    public attack(force: number): number {
         return 32 * force;
+    }
+
+    public slowAttack(force: number, time: number): Promise<number> {
+
+        return new Promise((resolve) => {
+
+            setTimeout(() => {
+                resolve(this.attack(force));
+            }, time);
+        });
     }
 }
 
@@ -22,7 +32,7 @@ tracer.on('call', (callInfo: CallInfo) => {
 });
 
 tracer.on('return', (returnInfo: ReturnInfo) => {
-    console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
+    console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result} - ${returnInfo.executionTime}ms`);
 });
 
 tracer.apply(container);
@@ -30,3 +40,4 @@ tracer.apply(container);
 const ninja = container.get<Ninja>('Ninja');
 
 ninja.attack(2);
+ninja.slowAttack(4, 1000);

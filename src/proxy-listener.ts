@@ -83,6 +83,8 @@ export interface ReturnInfo {
      * @memberof ReturnInfo
      */
     result: any;
+
+    executionTime: number;
 }
 
 export interface ProxyListenerOptions {
@@ -162,20 +164,38 @@ export class ProxyListener {
                     parameters: callParameters
                 } as CallInfo);
 
+                const startMethodTimestamp: number = Date.now();
+
                 const result = method.apply(object, arguments);
 
                 if (self.options.inspectReturnedPromise && result instanceof Promise) {
 
                     return result.then((value: any) => {
-                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: value } as ReturnInfo);
+
+                        self.emitter.emit('return', {
+                            className: object.constructor.name,
+                            methodName, result: value,
+                            executionTime: Date.now() - startMethodTimestamp
+                        } as ReturnInfo);
+
                         return Promise.resolve(value);
                     }).catch((error: any) => {
-                        self.emitter.emit('return', { className: object.constructor.name, methodName, result: error } as ReturnInfo);
+
+                        self.emitter.emit('return', {
+                            className: object.constructor.name,
+                            methodName, result: error,
+                            executionTime: Date.now() - startMethodTimestamp
+                        } as ReturnInfo);
+
                         return Promise.reject(error);
                     });
 
                 } else {
-                    self.emitter.emit('return', { className: object.constructor.name, methodName, result } as ReturnInfo);
+                    self.emitter.emit('return', {
+                        className: object.constructor.name,
+                        methodName, result,
+                        executionTime: Date.now() - startMethodTimestamp
+                    } as ReturnInfo);
                     return result;
                 }
             };
