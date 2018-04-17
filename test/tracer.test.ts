@@ -244,4 +244,63 @@ describe('InversifyTracer', () => {
             expect(onActivationSpy.calledTwice).to.be.true;
         });
     });
+
+    context('container with a class containing a slow method', () => {
+
+        let tracer: InversifyTracer;
+        let container: Container;
+
+        const onActivationSpy: sinon.SinonSpy = sinon.spy((context: any, newObject: any) => {
+            return newObject;
+        });
+
+        before(() => {
+            tracer = new InversifyTracer();
+            container = new Container();
+
+            container.bind<TestObject>('TestObject').to(TestObject).onActivation(onActivationSpy);
+
+            tracer.apply(container);
+        });
+
+        it('should return a ReturnInfo with an execution time greater than 10ms', (done) => {
+
+            const testObject = container.get<TestObject>('TestObject');
+
+            const callSpy: sinon.SinonSpy = sinon.spy();
+            const returnSpy: sinon.SinonSpy = sinon.spy();
+
+            const time: number = 10;
+
+            tracer.on('call', callSpy);
+            tracer.on('call', (callInfo: CallInfo) => {
+                expect(callInfo.className).to.be.equal('TestObject');
+                expect(callInfo.methodName).to.be.equal('methodPromiseResolveWithTimerAndValue');
+                expect(callInfo.parameters).to.have.length(2);
+                expect(callInfo.parameters[0]).to.contain({
+                    name: 'time',
+                    value: time
+                } as Parameter);
+                expect(callInfo.parameters[1]).to.contain({
+                    name: 'value',
+                    value: 32
+                } as Parameter);
+            });
+
+            tracer.on('return', returnSpy);
+            tracer.on('return', (returnInfo: ReturnInfo) => {
+                expect(returnInfo.className).to.be.equal('TestObject');
+                expect(returnInfo.methodName).to.be.equal('methodPromiseResolveWithTimerAndValue');
+                expect(returnInfo.executionTime).to.be.greaterThan(time);
+                expect(returnInfo.result).to.be.equal(32);
+
+                expect(returnSpy.calledOnce).to.be.true;
+                done();
+            });
+
+            testObject.methodPromiseResolveWithTimerAndValue(time, 32);
+
+            expect(callSpy.calledOnce).to.be.true;
+        });
+    });
 });
