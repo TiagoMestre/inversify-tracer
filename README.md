@@ -24,8 +24,18 @@ import { InversifyTracer, CallInfo, ReturnInfo } from './../src';
 
 class Ninja  {
 
-    public attack(force: number) {
+    public attack(force: number): number {
         return 32 * force;
+    }
+
+    public slowAttack(force: number, time: number): Promise<number> {
+
+        return new Promise((resolve) => {
+
+            setTimeout(() => {
+                resolve(this.attack(force));
+            }, time);
+        });
     }
 }
 
@@ -42,7 +52,7 @@ tracer.on('call', (callInfo: CallInfo) => {
 });
 
 tracer.on('return', (returnInfo: ReturnInfo) => {
-    console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result}`);
+    console.log(`${returnInfo.className} ${returnInfo.methodName} returned ${returnInfo.result} - ${returnInfo.executionTime}ms`);
 });
 
 tracer.apply(container);
@@ -50,13 +60,18 @@ tracer.apply(container);
 const ninja = container.get<Ninja>('Ninja');
 
 ninja.attack(2);
+ninja.slowAttack(4, 1000);
 ```
 
 **Result:**
 
 ```
 Ninja attack called with [{"name":"force","value":2}]
-Ninja attack returned 64
+Ninja attack returned 64 - 0ms
+Ninja slowAttack called with [{"name":"force","value":4},{"name":"time","value":1000}]
+Ninja attack called with [{"name":"force","value":4}]
+Ninja attack returned 128 - 0ms
+Ninja slowAttack returned 128 - 1004ms
 ```
 
 ## Configuration
@@ -69,7 +84,7 @@ const tracer = new InversifyTracer({
     inspectReturnedPromise: false
 });
 
-tracer.apply(kernel);
+tracer.apply(container);
 ```
 
 | Property              | Type      | Default       | Description                                                   |
@@ -114,8 +129,9 @@ Emitted each time a class method ends.
 
 ### ReturnInfo
 
-| Property      | Type      | Description                   |
-|---            |---        |---                            |
-| className     | string    | Name of the class             |
-| methodName    | string    | Name of the method            |
-| result        | any       | Returned value of the method  |
+| Property      | Type      | Description                           |
+|---            |---        |---                                    |
+| className     | string    | Name of the class                     |
+| methodName    | string    | Name of the method                    |
+| result        | any       | Returned value of the method          |
+| executionTime | number    | Method execution time in milliseconds |

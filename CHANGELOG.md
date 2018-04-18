@@ -1,16 +1,21 @@
 
+1.2.0 / 18-04-2018
+==================
+
+* Add executionTime field to ReturnInfo. This field contains the execution time of the method in milliseconds.
+
 1.1.2 / 08-04-2018
-===================
+==================
 
 * Fix bug #4 - "Tracer overrides the binding's onActivation function"
 
 1.1.1 / 25-02-2018
-===================
+==================
 
 * Remove index.d.ts (old version)
 
 1.1.0 / 25-02-2018
-===================
+==================
 
 * Upgrade tooling and project structure
 * Remove unnecessary code
@@ -27,14 +32,14 @@
 * Change to InvalidFilterError and InvalidTracerEventError error message
 
 1.0.7 / 10-11-2016
-===================
+==================
 
 * Add inversify 3.0.0 support
 * Change the log of a function argument to '<Function>'
 * Add definition documentation
 
 1.0.6 / 10-11-2016
-===================
+==================
 
 * Fix multiple proxies to constant objects
 * Fix inversify dictionary iteration
