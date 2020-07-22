@@ -61,6 +61,15 @@ export class InversifyTracer {
                 this.applyToBinding(binding);
             });
         });
+
+        const addBinding: () => any = container._bindingDictionary.add;
+
+        container._bindingDictionary.add = (serviceIdentifier: interfaces.ServiceIdentifier<any>, binding: interfaces.Binding<any>) => {
+
+            this.applyToBinding(binding);
+
+            return addBinding.apply(container._bindingDictionary, [serviceIdentifier, binding]);
+        };
     }
 
     private applyToBinding(binding: interfaces.Binding<any>): void {

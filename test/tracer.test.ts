@@ -2,7 +2,7 @@
 import 'reflect-metadata';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
-import { Container, decorate, injectable } from 'inversify';
+import { Container, decorate, injectable, BindingScopeEnum } from 'inversify';
 import { InversifyTracer } from './../src/tracer';
 import { InvalidFilterError } from './../src/invalid-filter-error';
 import { InvalidTracerEventError } from './../src/invalid-tracer-event-error';
@@ -301,6 +301,138 @@ describe('InversifyTracer', () => {
             testObject.methodPromiseResolveWithTimerAndValue(time, 32);
 
             expect(callSpy.calledOnce).to.be.true;
+        });
+    });
+
+    context('container with autoBindInjectable enabled', () => {
+
+        let tracer: InversifyTracer;
+        let container: Container;
+
+        before(() => {
+            tracer = new InversifyTracer();
+            container = new Container({ autoBindInjectable: true });
+            tracer.apply(container);
+        });
+
+        it('should proxy all methods and emit \"call\" and \"return\" events', () => {
+
+            const testObject = container.get(TestObject);
+
+            const callSpy: sinon.SinonSpy = sinon.spy();
+            const returnSpy: sinon.SinonSpy = sinon.spy();
+
+            tracer.on('call', callSpy);
+            tracer.on('call', (callInfo: CallInfo) => {
+                expect(callInfo.className).to.be.equal('TestObject');
+                expect(callInfo.methodName).to.be.equal('methodWithValue');
+                expect(callInfo.parameters).to.have.length(1);
+                expect(callInfo.parameters[0]).to.contain({
+                    name: 'value',
+                    value: 32
+                } as Parameter);
+            });
+
+            tracer.on('return', returnSpy);
+            tracer.on('return', (returnInfo: ReturnInfo) => {
+                expect(returnInfo.className).to.be.equal('TestObject');
+                expect(returnInfo.methodName).to.be.equal('methodWithValue');
+                expect(returnInfo.result).to.be.equal(32);
+            });
+
+            testObject.methodWithValue(32);
+
+            expect(callSpy.calledOnce).to.be.true;
+            expect(returnSpy.calledOnce).to.be.true;
+        });
+    });
+
+    context('container with autoBindInjectable enabled and defaultScope BindingScopeEnum.Singleton', () => {
+
+        let tracer: InversifyTracer;
+        let container: Container;
+
+        before(() => {
+            tracer = new InversifyTracer();
+            container = new Container({ defaultScope: BindingScopeEnum.Singleton,  autoBindInjectable: true });
+            tracer.apply(container);
+        });
+
+        it('should proxy all methods and emit \"call\" and \"return\" events', () => {
+
+            const testObject = container.get(TestObject);
+
+            const callSpy: sinon.SinonSpy = sinon.spy();
+            const returnSpy: sinon.SinonSpy = sinon.spy();
+
+            tracer.on('call', callSpy);
+            tracer.on('call', (callInfo: CallInfo) => {
+                expect(callInfo.className).to.be.equal('TestObject');
+                expect(callInfo.methodName).to.be.equal('methodWithValue');
+                expect(callInfo.parameters).to.have.length(1);
+                expect(callInfo.parameters[0]).to.contain({
+                    name: 'value',
+                    value: 32
+                } as Parameter);
+            });
+
+            tracer.on('return', returnSpy);
+            tracer.on('return', (returnInfo: ReturnInfo) => {
+                expect(returnInfo.className).to.be.equal('TestObject');
+                expect(returnInfo.methodName).to.be.equal('methodWithValue');
+                expect(returnInfo.result).to.be.equal(32);
+            });
+
+            testObject.methodWithValue(32);
+
+            expect(callSpy.calledOnce).to.be.true;
+            expect(returnSpy.calledOnce).to.be.true;
+        });
+    });
+
+    context('container late binding (after tracer.apply)', () => {
+
+        let tracer: InversifyTracer;
+        let container: Container;
+
+        before(() => {
+            tracer = new InversifyTracer();
+            container = new Container();
+
+            tracer.apply(container);
+
+            container.bind<TestObject>('TestObject').to(TestObject);
+        });
+
+        it('should proxy all methods and emit \"call\" and \"return\" events', () => {
+
+            const testObject = container.get<TestObject>('TestObject');
+
+            const callSpy: sinon.SinonSpy = sinon.spy();
+            const returnSpy: sinon.SinonSpy = sinon.spy();
+
+            tracer.on('call', callSpy);
+            tracer.on('call', (callInfo: CallInfo) => {
+                expect(callInfo.className).to.be.equal('TestObject');
+                expect(callInfo.methodName).to.be.equal('methodWithValue');
+                expect(callInfo.parameters).to.have.length(1);
+                expect(callInfo.parameters[0]).to.contain({
+                    name: 'value',
+                    value: 32
+                } as Parameter);
+            });
+
+            tracer.on('return', returnSpy);
+            tracer.on('return', (returnInfo: ReturnInfo) => {
+                expect(returnInfo.className).to.be.equal('TestObject');
+                expect(returnInfo.methodName).to.be.equal('methodWithValue');
+                expect(returnInfo.result).to.be.equal(32);
+            });
+
+            testObject.methodWithValue(32);
+
+            expect(callSpy.calledOnce).to.be.true;
+            expect(returnSpy.calledOnce).to.be.true;
         });
     });
 });

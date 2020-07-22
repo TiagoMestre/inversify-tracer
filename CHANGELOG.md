@@ -1,3 +1,9 @@
+1.2.1 / 22-07-2020
+==================
+
+* Fix bug with autoBindInjectable option
+* Listen to new bindings after tracer.apply
+* Update dev dependencies
 
 1.2.0 / 18-04-2018
 ==================
